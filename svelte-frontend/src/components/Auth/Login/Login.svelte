@@ -1,12 +1,21 @@
 <script>
+  let type = "";
+  $: errorMessage = "";
 
+  const handleSubmit = () => {
+    console.log("test");
 
-    let type = "";
-    $: errorMessage = "";
-
-    const handleSubmit = () => {
-        console.log("test");
-    }
+    axios
+      .get(
+        `http://localhost:9090/login/${type}/username/password`
+      )
+      .then((response) => {
+        
+      })
+      .catch((error) => {
+        errorMessage = "Le nom d'utilisateur ou le mot de passe est incorrect."
+      });
+  };
 </script>
 
 <div class="container cont_principal">
@@ -31,16 +40,16 @@
                 placeholder="Entrer votre nom d'utilisateur"
                 required
               />
-            </div>  
+            </div>
             <div class="form-group">
-              <input 
+              <input
                 type="password"
                 class="form-control input_form"
                 id="password"
                 placeholder="Entrer votre mot de passe"
                 required
               />
-            </div> 
+            </div>
           </div>
           <div class="container cont_btn">
             <p>{errorMessage}</p>
@@ -54,84 +63,83 @@
 
 <style>
   .cont_principal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+  }
 
-.cont_central {
-  padding: 2%;
-  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
-  border-radius: 8px;
-  transition: all 0.5s;
-  min-width: 40%;
-  margin: 5% auto;
-}
+  .cont_central {
+    padding: 2%;
+    background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
+    border-radius: 8px;
+    transition: all 0.5s;
+    min-width: 40%;
+    margin: 5% auto;
+  }
 
-.cont_title_form {
-  width: 100%;
-  box-shadow: none !important;
-  color: rgba(255, 64, 88, 0.74);
-}
+  .cont_title_form {
+    width: 100%;
+    box-shadow: none !important;
+    color: rgba(255, 64, 88, 0.74);
+  }
 
-.cont_title_form h2 {
-  font-weight: bold;
-  font-size: 2.5rem;
-}
+  .cont_title_form h2 {
+    font-weight: bold;
+    font-size: 2.5rem;
+  }
 
-.discret {
-  color: #9bacb3;
-}
+  .discret {
+    color: #9bacb3;
+  }
 
-.cont_inputs {
-  width: 100%;
-  margin-top: 2%;
-}
+  .cont_inputs {
+    width: 100%;
+    margin-top: 2%;
+  }
 
-.input_form {
-  width: 90%;
-  border: none;
-  border-bottom: 1px solid #b0bec5;
-  background-color: transparent;
-  font-size: 20px;
-  outline: none;
-  transition: all 0.5s;
-  border-radius: 0%;
+  .input_form {
+    width: 90%;
+    border: none;
+    border-bottom: 1px solid #b0bec5;
+    background-color: transparent;
+    font-size: 20px;
+    outline: none;
+    transition: all 0.5s;
+    border-radius: 0%;
 
-  margin: 5% 5%;
-  padding: 4% 2%;
-  opacity: 1;
-  height: 5px;
-  display: block;
-}
+    margin: 5% 5%;
+    padding: 4% 2%;
+    opacity: 1;
+    height: 5px;
+    display: block;
+  }
 
-.input_form:focus {
-  box-shadow: none;
-  background-color: transparent;
-}
+  .input_form:focus {
+    box-shadow: none;
+    background-color: transparent;
+  }
 
-.cont_btn {
-  position: relative;
-  display: inline-block;
-}
+  .cont_btn {
+    position: relative;
+    display: inline-block;
+  }
 
-.cont_btn p {
-  color: red;
-  font-size: 1rem;
-  font-weight: bold;
-}
+  .cont_btn p {
+    color: red;
+    font-size: 1rem;
+    font-weight: bold;
+  }
 
-.btn_submit {
-  background: rgba(255, 64, 88, 0.74);
-  box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);
-  border-radius: 8px;
-  padding: 15px 30px;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-}
-
+  .btn_submit {
+    background: rgba(255, 64, 88, 0.74);
+    box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);
+    border-radius: 8px;
+    padding: 15px 30px;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
 </style>
