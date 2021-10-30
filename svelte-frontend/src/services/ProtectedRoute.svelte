@@ -7,7 +7,6 @@
   export let component;
 
   $: isAuthenticated = auth.isAuthenticated();
-
 </script>
 
 {#if isAuthenticated}
