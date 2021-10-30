@@ -31,8 +31,8 @@
 .App {
   text-align: center;
   min-height: 100vh;
-  height: 100%;
-  /* Rectangle 3: */
+  height: 100%; 
+  /* Rectangle 3: */ 
   background-image: linear-gradient(-87deg, #F2F5F6 0%, #DDE5E8 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
