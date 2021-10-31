@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../components/Home'
-import Login from '../components/Auth/Login/Login'
-import Subscribe from '../components/Auth/Subscribe/Subscribe'
+import Home from '../views/Home'
+import Login from '../views/Login'
+import Subscribe from '../views/Subscribe'
 
 const routes = [
     {
@@ -19,6 +18,10 @@ const routes = [
         path: "/home",
         name: "Home",
         component : Home
+    },
+    {
+      path: '/:pathMatch(.*)',
+      redirect: '/'
     }
 ]
 
