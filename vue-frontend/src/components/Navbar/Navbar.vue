@@ -37,3 +37,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.navbar-nav{
+    margin: 0px
+}
+</style>
