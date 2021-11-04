@@ -3,23 +3,31 @@
 
   let type = "";
   let btnDisabled = true;
-  let min = 8
-  let username = ""
+  let minLengthUsername = 8;
+  let minLengthPassword = 4;
   let loginFields = {
-    username: "",
-    password: ""
-  }
+    username: null,
+    password: null,
+  };
   $: errorMessage = "";
 
-  const handleUsername = () => {
-    console.log("test" + loginFields.username);
-    if (loginFields.username.trim().length <= min) {
-      errorMessage = `Nom d'utilisateur doit être d'au moins ${min} charactères`
-      btnDisabled = true
-    }
-    else {
+  const handleValidations = () => {
+    if (loginFields.username != null && loginFields.username.trim().length <= minLengthUsername) {
+      errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
+      btnDisabled = true;
+    } else if (loginFields.password != null && loginFields.password.trim().length <= minLengthPassword) {
+      errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
+      btnDisabled = true;
+    } else {
       errorMessage = "";
       btnDisabled = false;
+    }
+  };
+
+  const login = () => {
+    console.log('button clicked')
+    if (!btnDisabled) {
+      console.log("Form valide")
     }
   }
 
@@ -47,7 +55,7 @@
                 placeholder="Entrer votre nom d'utilisateur"
                 required
                 bind:value={loginFields.username}
-                on:input={handleUsername}
+                on:input={handleValidations}
               />
             </div>
             <div class="form-group">
@@ -57,13 +65,19 @@
                 id="password"
                 placeholder="Entrer votre mot de passe"
                 required
-                :bind:value={loginFields.password}
+                bind:value={loginFields.password}
+                on:input={handleValidations}
               />
             </div>
           </div>
           <div class="container cont_btn">
             <p>{errorMessage}</p>
-            <Button style="btn_submit" type="submit" disabled={btnDisabled}></Button>
+            <Button
+              style="btn_submit"
+              type="submit"
+              disabled={btnDisabled}
+              on:handle-submit={login}
+            />
           </div>
         </form>
       </div>

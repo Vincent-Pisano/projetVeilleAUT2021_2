@@ -11,7 +11,7 @@
   };
 </script>
 
-<button class={style} {type} {disabled} on:click={() => handleclick()}>Submit</button>
+<button class={style} {type} {disabled} on:click|preventDefault={() => handleclick()}>Submit</button>
 
 <style>
   .btn_submit {
