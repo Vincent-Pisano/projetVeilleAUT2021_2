@@ -1,21 +1,28 @@
 <script>
+  import Button from "../../Button.svelte";
+
   let type = "";
+  let btnDisabled = true;
+  let min = 8
+  let username = ""
+  let loginFields = {
+    username: "",
+    password: ""
+  }
   $: errorMessage = "";
 
-  const handleSubmit = () => {
-    console.log("test");
+  const handleUsername = () => {
+    console.log("test" + loginFields.username);
+    if (loginFields.username.trim().length <= min) {
+      errorMessage = `Nom d'utilisateur doit être d'au moins ${min} charactères`
+      btnDisabled = true
+    }
+    else {
+      errorMessage = "";
+      btnDisabled = false;
+    }
+  }
 
-    axios
-      .get(
-        `http://localhost:9090/login/${type}/username/password`
-      )
-      .then((response) => {
-        
-      })
-      .catch((error) => {
-        errorMessage = "Le nom d'utilisateur ou le mot de passe est incorrect."
-      });
-  };
 </script>
 
 <div class="container cont_principal">
@@ -27,7 +34,7 @@
         </div>
       </div>
       <div class="row">
-        <form on:submit|preventDefault={handleSubmit()}>
+        <form>
           <div class="cont_inputs">
             <div class="form-group">
               <label for="username" class="discret mb-0">
@@ -39,6 +46,8 @@
                 id="username"
                 placeholder="Entrer votre nom d'utilisateur"
                 required
+                bind:value={loginFields.username}
+                on:input={handleUsername}
               />
             </div>
             <div class="form-group">
@@ -48,12 +57,13 @@
                 id="password"
                 placeholder="Entrer votre mot de passe"
                 required
+                :bind:value={loginFields.password}
               />
             </div>
           </div>
           <div class="container cont_btn">
             <p>{errorMessage}</p>
-            <button class="btn_submit">Submit</button>
+            <Button style="btn_submit" type="submit" disabled={btnDisabled}></Button>
           </div>
         </form>
       </div>
@@ -75,7 +85,7 @@
     background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
     border-radius: 8px;
     transition: all 0.5s;
-    min-width: 40%;
+    width: 40%;
     margin: 5% auto;
   }
 
@@ -130,16 +140,5 @@
     color: red;
     font-size: 1rem;
     font-weight: bold;
-  }
-
-  .btn_submit {
-    background: rgba(255, 64, 88, 0.74);
-    box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);
-    border-radius: 8px;
-    padding: 15px 30px;
-    border: none;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
   }
 </style>
