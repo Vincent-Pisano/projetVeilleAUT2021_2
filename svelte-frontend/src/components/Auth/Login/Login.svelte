@@ -1,5 +1,12 @@
 <script>
   import Button from "../../Button.svelte";
+  import axios from "axios";
+  import auth from "../../../services/Auth";
+  import { URL_LOGIN } from "../../../utils/API";
+  import {
+    minLengthUsername,
+    minLengthPassword,
+  } from "../../../utils/VALIDATION";
 
   export let location;
   if (location == null) {
@@ -8,8 +15,6 @@
 
   let type = "";
   let btnDisabled = true;
-  let minLengthUsername = 8;
-  let minLengthPassword = 4;
   let loginFields = {
     username: null,
     password: null,
@@ -19,13 +24,17 @@
   const handleValidations = () => {
     if (
       loginFields.username != null &&
-      loginFields.username.trim().length <= minLengthUsername
+      loginFields.username.trim().length < minLengthUsername
     ) {
       errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
       btnDisabled = true;
+    } else if (!["E", "S", "M", "G"].includes(loginFields.username.charAt(0))) {
+      errorMessage =
+        "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'";
+      btnDisabled = true;
     } else if (
       loginFields.password != null &&
-      loginFields.password.trim().length <= minLengthPassword
+      loginFields.password.trim().length < minLengthPassword
     ) {
       errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
       btnDisabled = true;
@@ -35,9 +44,20 @@
     }
   };
 
-  const login = () => {
+  const login = async () => {
     if (!btnDisabled) {
-      console.log("Form valide");
+      console.log(URL_LOGIN + type + `/${loginFields.username}/${loginFields.password}`);
+      axios
+        .get(
+          URL_LOGIN + type + `/${loginFields.username}/${loginFields.password}`
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
+          console.error(error);
+        });
     }
   };
 </script>
@@ -87,7 +107,7 @@
               disabled={btnDisabled}
               on:handle-click={login}
             >
-              Submit
+              Connexion
             </Button>
           </div>
         </form>

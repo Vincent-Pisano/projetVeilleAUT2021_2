@@ -1,9 +1,10 @@
 <script>
   import { createEventDispatcher } from "svelte";
+
   export let style = "";
   export let type = "button";
   export let disabled = false;
-  export let key = "";
+  export let key = "test";
 
   const dispatch = createEventDispatcher();
 

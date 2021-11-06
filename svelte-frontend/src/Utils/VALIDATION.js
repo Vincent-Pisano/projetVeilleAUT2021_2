@@ -1,4 +1,4 @@
-export let minLengthUsername = 8;
+export let minLengthUsername = 6;
 export let minLengthPassword = 4;
 
 export function validateEmail(email) {
