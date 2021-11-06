@@ -1,12 +1,10 @@
 <script>
-  import Button from "../../Button.svelte";
   import axios from "axios";
+  import { navigate } from "svelte-routing";
+  import Button from "../../Button.svelte";
   import auth from "../../../services/Auth";
   import { URL_LOGIN } from "../../../utils/API";
-  import {
-    minLengthUsername,
-    minLengthPassword,
-  } from "../../../utils/VALIDATION";
+  import { minLengthUsername, minLengthPassword, } from "../../../utils/VALIDATION";
 
   export let location;
   if (location == null) {
@@ -45,18 +43,33 @@
   };
 
   const login = async () => {
+    switch (loginFields.username.charAt(0)) {
+      case "E":
+        type = "student";
+        break;
+      case "S":
+        type = "supervisor";
+        break;
+      case "M":
+        type = "monitor";
+        break;
+      case "G":
+        type = "internshipManager";
+        break;
+    }
+
     if (!btnDisabled) {
-      console.log(URL_LOGIN + type + `/${loginFields.username}/${loginFields.password}`);
       axios
         .get(
           URL_LOGIN + type + `/${loginFields.username}/${loginFields.password}`
         )
         .then((response) => {
-          console.log(response);
+          auth.login(() => {
+            navigate("/home");
+          }, response.data)
         })
         .catch((error) => {
           errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
-          console.error(error);
         });
     }
   };

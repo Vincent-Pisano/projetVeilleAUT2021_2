@@ -13,6 +13,7 @@ class Auth {
       this.authenticated = true;
       this.user = user;
       sessionStorage.setItem("user", JSON.stringify(this.user));
+      console.log("inside " + this.authenticated)
       cb();
     }
   

@@ -9,7 +9,7 @@
   $: isAuthenticated = auth.isAuthenticated();
 </script>
 
-{#if isAuthenticated}
+{#if auth.isAuthenticated()}
   <Route path={path} component={component} />
 {:else}
   <Route path="/" component={Login} />

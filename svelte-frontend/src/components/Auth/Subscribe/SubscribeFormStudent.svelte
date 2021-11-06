@@ -1,4 +1,8 @@
 <script>
+  import axios from "axios";
+  import { navigate } from "svelte-routing";
+  import auth from "../../../services/Auth";
+  import { URL_SIGN_UP_STUDENT } from "../../../utils/API";
   import departments from "../../../Utils/DEPARTMENT";
   import Button from "../../Button.svelte";
 
@@ -6,7 +10,7 @@
   export let errorMessage;
   export let btnDisabled;
 
-  let loginFields = {
+  let studentfields = {
     username: null,
     password: null,
     email: null,
@@ -16,9 +20,23 @@
   };
 
   const subscribe = () => {
-      if (!btnDisabled) {
-          console.log("Form valide")
+      if (studentfields.username.startsWith("E")) {
+        if (!btnDisabled) {
+      axios
+        .post(URL_SIGN_UP_STUDENT, studentfields)
+        .then((response) => {
+          auth.login(() => {
+            navigate("/home");
+          }, response.data);
+        })
+        .catch((error) => {
+          errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
+        });
       }
+      else {
+        errorMessage = "Le nom d'utilisateur doit commencer par 'E' !.";
+      }
+    }
   };
 </script>
 
@@ -34,8 +52,8 @@
         id="username"
         placeholder="Entrer votre nom d'utilisateur"
         required
-        bind:value={loginFields.username}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={studentfields.username}
+        on:input={() => handleValidations(studentfields)}
       />
     </div>
     <div class="form-group">
@@ -45,8 +63,8 @@
         id="password"
         placeholder="Entrer votre mot de passe"
         required
-        bind:value={loginFields.password}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={studentfields.password}
+        on:input={() => handleValidations(studentfields)}
       />
     </div>
     <div class="form-group">
@@ -56,8 +74,8 @@
         id="email"
         placeholder="Entrer votre courriel"
         required
-        bind:value={loginFields.email}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={studentfields.email}
+        on:input={() => handleValidations(studentfields)}
       />
     </div>
     <div class="form-group">
@@ -67,8 +85,8 @@
         id="firstName"
         placeholder="Entrer votre prénom"
         required
-        bind:value={loginFields.firstName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={studentfields.firstName}
+        on:input={() => handleValidations(studentfields)}
       />
     </div>
     <div class="form-group">
@@ -78,8 +96,8 @@
         id="lastName"
         placeholder="Entrer votre nom de famille"
         required
-        bind:value={loginFields.lastName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={studentfields.lastName}
+        on:input={() => handleValidations(studentfields)}
       />
     </div>
     <div class="form-group">
@@ -88,8 +106,8 @@
         id="departments"
         class="input_form select_form"
         required
-        bind:value={loginFields.department}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={studentfields.department}
+        on:input={() => handleValidations(studentfields)}
       >
         {#each departments as department}
           <option value={department.key}>{department.name}</option>

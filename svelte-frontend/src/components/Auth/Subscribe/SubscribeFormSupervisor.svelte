@@ -1,4 +1,8 @@
 <script>
+  import { URL_SIGN_UP_SUPERVISOR } from "../../../utils/API";
+  import axios from "axios";
+  import { navigate } from "svelte-routing";
+  import auth from "../../../services/Auth";
   import departments from "../../../utils/DEPARTMENT";
   import Button from "../../Button.svelte";
 
@@ -6,7 +10,7 @@
   export let errorMessage;
   export let btnDisabled;
 
-  let loginFields = {
+  let supervisorfields = {
     username: null,
     password: null,
     email: null,
@@ -16,9 +20,22 @@
   };
 
   const subscribe = () => {
+    if (supervisorfields.username.startsWith("S")) {
       if (!btnDisabled) {
-          console.log("Form valide")
+        axios
+          .post(URL_SIGN_UP_SUPERVISOR, supervisorfields)
+          .then((response) => {
+            auth.login(() => {
+              navigate("/home");
+            }, response.data);
+          })
+          .catch((error) => {
+            errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
+          });
+      } else {
+        errorMessage = "Le nom d'utilisateur doit commencer par 'S' !.";
       }
+    }
   };
 </script>
 
@@ -34,8 +51,8 @@
         id="username"
         placeholder="Entrer votre nom d'utilisateur"
         required
-        bind:value={loginFields.username}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={supervisorfields.username}
+        on:input={() => handleValidations(supervisorfields)}
       />
     </div>
     <div class="form-group">
@@ -45,8 +62,8 @@
         id="password"
         placeholder="Entrer votre mot de passe"
         required
-        bind:value={loginFields.password}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={supervisorfields.password}
+        on:input={() => handleValidations(supervisorfields)}
       />
     </div>
     <div class="form-group">
@@ -56,8 +73,8 @@
         id="email"
         placeholder="Entrer votre courriel"
         required
-        bind:value={loginFields.email}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={supervisorfields.email}
+        on:input={() => handleValidations(supervisorfields)}
       />
     </div>
     <div class="form-group">
@@ -67,8 +84,8 @@
         id="firstName"
         placeholder="Entrer votre prénom"
         required
-        bind:value={loginFields.firstName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={supervisorfields.firstName}
+        on:input={() => handleValidations(supervisorfields)}
       />
     </div>
     <div class="form-group">
@@ -78,8 +95,8 @@
         id="lastName"
         placeholder="Entrer votre nom de famille"
         required
-        bind:value={loginFields.lastName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={supervisorfields.lastName}
+        on:input={() => handleValidations(supervisorfields)}
       />
     </div>
     <div class="form-group">
@@ -88,8 +105,8 @@
         id="departments"
         class="input_form select_form"
         required
-        bind:value={loginFields.department}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={supervisorfields.department}
+        on:input={() => handleValidations(supervisorfields)}
       >
         {#each departments as department}
           <option value={department.key}>{department.name}</option>

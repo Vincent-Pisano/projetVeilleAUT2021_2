@@ -1,11 +1,15 @@
 <script>
+  import { URL_SIGN_UP_MONITOR } from "../../../utils/API";
+  import axios from "axios";
+  import { navigate } from "svelte-routing";
+  import auth from "../../../services/Auth";
   import Button from "../../Button.svelte";
-  
+
   export let handleValidations;
   export let errorMessage;
   export let btnDisabled;
 
-  let loginFields = {
+  let monitorfields = {
     username: null,
     password: null,
     email: null,
@@ -16,9 +20,22 @@
   };
 
   const subscribe = () => {
+    if (monitorfields.username.startsWith("M")) {
       if (!btnDisabled) {
-          console.log("Form valide")
+        axios
+          .post(URL_SIGN_UP_MONITOR, monitorfields)
+          .then((response) => {
+            auth.login(() => {
+              navigate("/home");
+            }, response.data);
+          })
+          .catch((error) => {
+            errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
+          });
+      } else {
+        errorMessage = "Le nom d'utilisateur doit commencer par 'M' !.";
       }
+    }
   };
 </script>
 
@@ -34,8 +51,8 @@
         id="username"
         placeholder="Entrer votre nom d'utilisateur"
         required
-        bind:value={loginFields.username}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.username}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
     <div class="form-group">
@@ -45,8 +62,8 @@
         id="password"
         placeholder="Entrer votre mot de passe"
         required
-        bind:value={loginFields.password}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.password}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
     <div class="form-group">
@@ -56,8 +73,8 @@
         id="email"
         placeholder="Entrer votre courriel"
         required
-        bind:value={loginFields.email}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.email}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
     <div class="form-group">
@@ -67,8 +84,8 @@
         id="firstName"
         placeholder="Entrer votre prénom"
         required
-        bind:value={loginFields.firstName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.firstName}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
     <div class="form-group">
@@ -78,8 +95,8 @@
         id="lastName"
         placeholder="Entrer votre nom de famille"
         required
-        bind:value={loginFields.lastName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.lastName}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
     <div class="form-group">
@@ -89,8 +106,8 @@
         id="enterpriseName"
         placeholder="Entrer votre nom de poste"
         required
-        bind:value={loginFields.enterpriseName}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.enterpriseName}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
     <div class="form-group">
@@ -100,8 +117,8 @@
         id="jobTitle"
         placeholder="Entrer votre nom d'entreprise"
         required
-        bind:value={loginFields.jobTitle}
-        on:input={() => handleValidations(loginFields)}
+        bind:value={monitorfields.jobTitle}
+        on:input={() => handleValidations(monitorfields)}
       />
     </div>
   </div>
