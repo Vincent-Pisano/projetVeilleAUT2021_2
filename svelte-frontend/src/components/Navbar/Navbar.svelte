@@ -1,5 +1,5 @@
 <script>
-  import { HOME_PAGE_URL as urls } from "../../Utils/URL";
+  import { HOME_PAGE_URL as urls } from "../../utils/URL";
   import { Link } from "svelte-routing";
 </script>
 

@@ -1,13 +1,13 @@
 <script>
   import Button from "../../Button.svelte";
-  import actors from "../../../Utils/ACTORS";
+  import actors from "../../../utils/ACTORS";
 
   export let location;
-  $: currentChoice = actors[0];
-
   if (location == null) {
     console.error("an Error occured during the routing");
   }
+
+  $: currentChoice = actors[0];
 
   const changeCurrentChoice = (e) => {
     currentChoice = actors.find((actor) => actor.key == e.detail);
@@ -38,7 +38,8 @@
           </div>
         {/each}
       </div>
-      <svelte:component this={currentChoice.subscribeForm} />
+      <svelte:component
+        this={currentChoice.subscribeForm}/>
     </div>
   </div>
 </div>
