@@ -85,7 +85,7 @@
               style="btn_submit"
               type="submit"
               disabled={btnDisabled}
-              on:handle-submit={login}
+              on:handle-click={login}
             >
               Submit
             </Button>

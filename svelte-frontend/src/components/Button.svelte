@@ -8,7 +8,7 @@
   const dispatch = createEventDispatcher();
 
   const handleclick = () => {
-    dispatch("handle-submit", key);
+    dispatch("handle-click", key);
   };
 </script>
 

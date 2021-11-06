@@ -3,14 +3,14 @@
   import actors from "../../../Utils/ACTORS";
 
   export let location;
+  $: currentChoice = actors[0];
+
   if (location == null) {
     console.error("an Error occured during the routing");
   }
 
-  $: currentChoice = "student";
-
   const changeCurrentChoice = (e) => {
-    currentChoice = e.detail;
+    currentChoice = actors.find((actor) => actor.key == e.detail);
   };
 </script>
 
@@ -27,17 +27,18 @@
           <div class={"px-0 mb-2 " + (i % 2 === 1 ? "col-4" : "col-3")}>
             <Button
               key={actor.key}
-              style={currentChoice === actor.key
+              style={currentChoice.key === actor.key
                 ? "btn_link btn_link_selected"
                 : "btn_link"}
               type="button"
-              on:handle-submit={changeCurrentChoice}
+              on:handle-click={changeCurrentChoice}
             >
               {actor.name}
             </Button>
           </div>
         {/each}
       </div>
+      <svelte:component this={currentChoice.subscribeForm} />
     </div>
   </div>
 </div>
