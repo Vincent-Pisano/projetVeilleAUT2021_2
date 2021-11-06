@@ -1,6 +1,11 @@
 <script>
   import Button from "../../Button.svelte";
 
+  export let location;
+  if (location == null) {
+    console.error("an Error occured during the routing");
+  }
+
   let type = "";
   let btnDisabled = true;
   let minLengthUsername = 8;
@@ -12,10 +17,16 @@
   $: errorMessage = "";
 
   const handleValidations = () => {
-    if (loginFields.username != null && loginFields.username.trim().length <= minLengthUsername) {
+    if (
+      loginFields.username != null &&
+      loginFields.username.trim().length <= minLengthUsername
+    ) {
       errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
       btnDisabled = true;
-    } else if (loginFields.password != null && loginFields.password.trim().length <= minLengthPassword) {
+    } else if (
+      loginFields.password != null &&
+      loginFields.password.trim().length <= minLengthPassword
+    ) {
       errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
       btnDisabled = true;
     } else {
@@ -25,12 +36,10 @@
   };
 
   const login = () => {
-    console.log('button clicked')
     if (!btnDisabled) {
-      console.log("Form valide")
+      console.log("Form valide");
     }
-  }
-
+  };
 </script>
 
 <div class="container cont_principal">
@@ -77,7 +86,9 @@
               type="submit"
               disabled={btnDisabled}
               on:handle-submit={login}
-            />
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </div>
@@ -102,6 +113,12 @@
     width: 40%;
     margin: 5% auto;
   }
+
+  @media only screen and (max-width: 700px) {
+  .cont_central {
+    width: 80%;
+  }
+}
 
   .cont_title_form {
     width: 100%;

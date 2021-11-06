@@ -1,12 +1,10 @@
 <script>
-  import { getURL } from "../../Utils/URL";
+  import { HOME_PAGE_URL as urls } from "../../Utils/URL";
   import { Link } from "svelte-routing";
-
-  let url = getURL();
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 m-0">
-  <span >Gestionnaire de stage</span>
+  <span>Gestionnaire de stage</span>
   <button
     class="navbar-toggler"
     type="button"
@@ -21,12 +19,11 @@
 
   <div class="collapse navbar-collapse ml" id="navbarcontent">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <Link class="nav-link" to={url.LOGIN}>Connexion</Link>
-      </li>
-      <li class="nav-item">
-        <Link class="nav-link" to={url.SUBSCRIBE}>Inscription</Link>
-      </li>
+      {#each urls as url}
+        <li class="nav-item">
+          <Link class="nav-link" to={url.link}>{url.name}</Link>
+        </li>
+      {/each}
     </ul>
   </div>
 </nav>

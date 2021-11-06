@@ -1,9 +1,14 @@
-const URL = {
-    LOGIN: "/",
-    SUBSCRIBE: "/subscribe",
-    HOME: "/home",
-  };
+const HOME_PAGE_URL = [
+      {
+          key:"LOGIN",
+          link :"/", 
+          name:"Connexion"
+      },
+      {
+          key: "SUBSCRIBE",
+          link :"/subscribe", 
+          name:"Inscription"
+      }
+  ]
 
-export function getURL() {
-  return URL
-}
+export { HOME_PAGE_URL }
