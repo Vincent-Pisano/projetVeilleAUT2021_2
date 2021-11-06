@@ -114,11 +114,11 @@
     margin: 5% auto;
   }
 
-  @media only screen and (max-width: 700px) {
-  .cont_central {
-    width: 80%;
+  @media only screen and (max-width: 600px) {
+    .cont_central {
+      width: 98%;
+    }
   }
-}
 
   .cont_title_form {
     width: 100%;

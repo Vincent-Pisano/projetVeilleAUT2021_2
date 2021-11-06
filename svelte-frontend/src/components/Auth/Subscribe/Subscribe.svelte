@@ -1,6 +1,11 @@
 <script>
   import Button from "../../Button.svelte";
   import actors from "../../../utils/ACTORS";
+  import {
+    minLengthUsername,
+    minLengthPassword,
+    validateEmail
+  } from "../../../utils/VALIDATION";
 
   export let location;
   if (location == null) {
@@ -8,9 +13,45 @@
   }
 
   $: currentChoice = actors[0];
+  $: errorMessage = "";
+  let btnDisabled = true;
 
   const changeCurrentChoice = (e) => {
+    errorMessage = "";
+    btnDisabled = true;
     currentChoice = actors.find((actor) => actor.key == e.detail);
+  };
+
+  const handleValidations = (loginFields) => {
+    if (
+      loginFields.username != null &&
+      loginFields.username.trim().length <= minLengthUsername
+    ) {
+      errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
+      btnDisabled = true;
+    } else if (
+      loginFields.password != null &&
+      loginFields.password.trim().length <= minLengthPassword
+    ) {
+      errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
+      btnDisabled = true;
+    } else if (
+      loginFields.email != null &&
+      !validateEmail(loginFields.email)
+    ) {
+        errorMessage = `L'email n'est pas sous le bon format (exemple@test.com)`;
+        btnDisabled = true;
+    }
+    else if (
+      Object.values(loginFields).every(
+        (element) => element != null && element != ""
+      )
+    ) {
+      btnDisabled = false;
+      errorMessage = "";
+    } else {
+      errorMessage = "";
+    }
   };
 </script>
 
@@ -39,7 +80,11 @@
         {/each}
       </div>
       <svelte:component
-        this={currentChoice.subscribeForm}/>
+        this={currentChoice.subscribeForm}
+        {handleValidations}
+        {errorMessage}
+        {btnDisabled}
+      />
     </div>
   </div>
 </div>
@@ -60,6 +105,12 @@
     transition: all 0.5s;
     width: 40%;
     margin: 5% auto;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .cont_central {
+      width: 98%;
+    }
   }
 
   .cont_title_form {

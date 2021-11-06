@@ -1,9 +1,10 @@
 <script>
   import Button from "../../Button.svelte";
+  
+  export let handleValidations;
+  export let errorMessage;
+  export let btnDisabled;
 
-  $: errorMessage = "";
-
-  let btnDisabled = true;
   let loginFields = {
     username: null,
     password: null,
@@ -14,11 +15,11 @@
     jobTitle: null,
   };
 
-  const handleValidations = () => {
-    console.log(loginFields);
+  const subscribe = () => {
+      if (!btnDisabled) {
+          console.log("Form valide")
+      }
   };
-
-  const subscribe = () => {};
 </script>
 
 <form>
@@ -34,7 +35,7 @@
         placeholder="Entrer votre nom d'utilisateur"
         required
         bind:value={loginFields.username}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
     <div class="form-group">
@@ -45,7 +46,7 @@
         placeholder="Entrer votre mot de passe"
         required
         bind:value={loginFields.password}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
     <div class="form-group">
@@ -56,7 +57,7 @@
         placeholder="Entrer votre courriel"
         required
         bind:value={loginFields.email}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
     <div class="form-group">
@@ -67,7 +68,7 @@
         placeholder="Entrer votre prénom"
         required
         bind:value={loginFields.firstName}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
     <div class="form-group">
@@ -78,7 +79,7 @@
         placeholder="Entrer votre nom de famille"
         required
         bind:value={loginFields.lastName}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
     <div class="form-group">
@@ -89,7 +90,7 @@
         placeholder="Entrer votre nom de poste"
         required
         bind:value={loginFields.enterpriseName}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
     <div class="form-group">
@@ -100,7 +101,7 @@
         placeholder="Entrer votre nom d'entreprise"
         required
         bind:value={loginFields.jobTitle}
-        on:input={handleValidations}
+        on:input={() => handleValidations(loginFields)}
       />
     </div>
   </div>
