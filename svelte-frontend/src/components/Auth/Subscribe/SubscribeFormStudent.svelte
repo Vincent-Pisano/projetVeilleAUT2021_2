@@ -1,7 +1,10 @@
 <script>
   import departments from "../../../utils/DEPARTMENT";
+  import Button from "../../Button.svelte";
 
   $: errorMessage = "";
+
+  let btnDisabled = true;
   let loginFields = {
     username: null,
     password: null,
@@ -14,6 +17,8 @@
   const handleValidations = () => {
     console.log(loginFields);
   };
+
+  const subscribe = () => {};
 </script>
 
 <form>
@@ -93,6 +98,14 @@
   </div>
   <div class="container cont_btn">
     <p>{errorMessage}</p>
+    <Button
+      style="btn_submit"
+      type="submit"
+      disabled={btnDisabled}
+      on:handle-click={subscribe}
+    >
+      Confirmer
+    </Button>
   </div>
 </form>
 
