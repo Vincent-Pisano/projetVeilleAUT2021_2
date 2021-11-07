@@ -65,7 +65,7 @@
         )
         .then((response) => {
           auth.login(() => {
-            navigate("/home");
+            navigate("/home")
           }, response.data)
         })
         .catch((error) => {

@@ -1,15 +1,14 @@
 <script>
   import { Route } from 'svelte-routing';
   import Login from "../components/Auth/Login/Login.svelte";
-  import auth from './Auth'
+  import { isAuthenticated } from './Store'
 
   export let path;
   export let component;
 
-  $: isAuthenticated = auth.isAuthenticated();
 </script>
 
-{#if auth.isAuthenticated()}
+{#if $isAuthenticated}
   <Route path={path} component={component} />
 {:else}
   <Route path="/" component={Login} />

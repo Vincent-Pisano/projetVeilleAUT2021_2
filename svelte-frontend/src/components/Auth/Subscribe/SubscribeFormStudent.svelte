@@ -20,20 +20,19 @@
   };
 
   const subscribe = () => {
-      if (studentfields.username.startsWith("E")) {
-        if (!btnDisabled) {
-      axios
-        .post(URL_SIGN_UP_STUDENT, studentfields)
-        .then((response) => {
-          auth.login(() => {
-            navigate("/home");
-          }, response.data);
-        })
-        .catch((error) => {
-          errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
-        });
-      }
-      else {
+    if (studentfields.username.startsWith("E")) {
+      if (!btnDisabled) {
+        axios
+          .post(URL_SIGN_UP_STUDENT, studentfields)
+          .then((response) => {
+            auth.login(() => {
+              navigate("/home");
+            }, response.data);
+          })
+          .catch((error) => {
+            errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
+          });
+      } else {
         errorMessage = "Le nom d'utilisateur doit commencer par 'E' !.";
       }
     }

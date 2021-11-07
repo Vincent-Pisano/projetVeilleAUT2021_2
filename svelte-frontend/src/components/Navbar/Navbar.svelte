@@ -1,12 +1,11 @@
 <script>
+  import { isAuthenticated } from "../../services/Store";
   import auth from "../../services/Auth";
   import { navigate } from "svelte-routing";
   import { HOME_PAGE_URL as urls } from "../../utils/URL";
   import { Link } from "svelte-routing";
 
-  $: isAuthenticated = auth.isAuthenticated();
-  console.log(auth.isAuthenticated())
-  console.log(isAuthenticated)
+  //$: isTest = auth.isAuthenticated();
 
   const logout = () => {
     auth.logout(() => {
@@ -31,19 +30,20 @@
 
   <div class="collapse navbar-collapse ml" id="navbarcontent">
     <ul class="navbar-nav">
-      {#each urls as url}
+      {#if $isAuthenticated}
         <li class="nav-item">
-          <Link class="nav-link" to={url.link}>{url.name}</Link>
+          <Link class="nav-link" to="/home">Accueil</Link>
         </li>
-      {/each}
-      {#if isAuthenticated}
         <li class="nav-item">
           <Link class="nav-link" on:click={() => logout()}>Déconnexion</Link>
         </li>
+      {:else}
+        {#each urls as url}
+          <li class="nav-item">
+            <Link class="nav-link" to={url.link}>{url.name}</Link>
+          </li>
+        {/each}
       {/if}
-      <li>
-        {isAuthenticated}
-      </li>
     </ul>
   </div>
 </nav>

@@ -7,6 +7,7 @@
   import Subscribe from "./components/Auth/Subscribe/Subscribe.svelte";
 
   export let url = "";
+
 </script>
 
 <div class="App">
