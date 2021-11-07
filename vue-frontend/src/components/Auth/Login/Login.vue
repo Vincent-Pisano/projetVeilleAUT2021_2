@@ -34,7 +34,7 @@
             </div>
             <div class="container cont_btn">
               <p>{{ errorMessage }}</p>
-              <Button @btn-click="$emit('temp')" :style="'btn_submit'" text="Connexion" />
+              <Button @btn-click="$emit('temp')" :style="'btn_submit'">Connexion</Button>
             </div>
           </form>
         </div>

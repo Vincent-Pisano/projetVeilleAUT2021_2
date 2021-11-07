@@ -16,12 +16,17 @@
             <Button
               :style="
                 'btn_link ' +
-                (currentChoice.key === actor.key ? 'btn_link_selected' : '')
+                (currentChoice.key == actor.key ? 'btn_link_selected' : '')
               "
-              @btn-click="changeCurrentChoice()"
-              :text="actor.name"
-            />
+              :id="actor.key"
+              @btn-click="changeCurrentChoice"
+              :disabled="false"
+              >{{ actor.name }}</Button
+            >
           </div>
+        </div>
+        <div>
+          <component :is="currentChoice.subscribeForm"/>
         </div>
       </div>
     </div>
@@ -35,14 +40,19 @@ import actors from "../../../utils/ACTORS";
 export default {
   name: "Login",
   components: {
-    Button,
+    Button
+  },
+  data() {
+    return {
+      actors: actors,
+      currentChoice: actors[0],
+    };
   },
   methods: {
-    changeCurrentChoice() {},
-  },
-  created() {
-    this.actors = actors;
-    this.currentChoice = this.actors[0];
+    changeCurrentChoice(key) {
+      console.log("test")
+      this.currentChoice = actors.find((actor) => actor.key == key);
+    },
   },
 };
 </script>

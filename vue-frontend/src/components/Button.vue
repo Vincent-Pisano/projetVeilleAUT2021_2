@@ -1,6 +1,6 @@
 <template>
-  <button @click="onClick()" :class="style">
-    {{ text }}
+  <button @click="onClick(id)" :class="style" :disabled="disabled">
+    <slot></slot>
   </button>
 </template>
 
@@ -8,12 +8,21 @@
 export default {
   name: "Button",
   props: {
-    text: String,
     style: String,
+    id: {
+      type: String,
+      required: false,
+      default: "Submit",
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
   },
   methods: {
-    onClick() {
-      this.$emit("btn-click");
+    onClick(id) {
+      this.$emit("btn-click", id);
     },
   },
 };
@@ -29,6 +38,11 @@ export default {
   color: #fff;
   font-size: 14px;
   cursor: pointer;
+}
+
+button:disabled {
+  background: rgba(214, 47, 70, 0.74) !important;
+  cursor: wait;
 }
 
 .btn_link {
