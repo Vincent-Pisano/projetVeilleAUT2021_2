@@ -34,10 +34,7 @@
             </div>
             <div class="container cont_btn">
               <p>{{ errorMessage }}</p>
-              <Button
-                @btn-click="$emit('temp')"
-                text="Connexion"
-              />
+              <Button @btn-click="$emit('temp')" :style="'btn_submit'" text="Connexion" />
             </div>
           </form>
         </div>
@@ -54,6 +51,9 @@ export default {
   components: {
     Button,
   },
+  created() {
+    this.errorMessage = "";
+  }
 };
 </script>
 
@@ -70,9 +70,16 @@ export default {
   background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
   border-radius: 8px;
   transition: all 0.5s;
-  min-width: 40%;
+  width: 40%;
   margin: 5% auto;
 }
+
+@media only screen and (max-width: 900px) {
+  .cont_central {
+    width: 98%;
+  }
+}
+
 .cont_title_form {
   width: 100%;
   box-shadow: none !important;
