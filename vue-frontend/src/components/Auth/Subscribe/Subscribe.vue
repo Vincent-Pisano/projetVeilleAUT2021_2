@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     changeCurrentChoice(key) {
-      console.log("test")
       this.currentChoice = actors.find((actor) => actor.key == key);
     },
   },

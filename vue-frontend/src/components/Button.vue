@@ -1,5 +1,5 @@
 <template>
-  <button @click="onClick(id)" :class="style" :disabled="disabled">
+  <button @click="onClick" :class="style" :disabled="disabled">
     <slot></slot>
   </button>
 </template>
@@ -21,8 +21,9 @@ export default {
     },
   },
   methods: {
-    onClick(id) {
-      this.$emit("btn-click", id);
+    onClick(event) {
+      event.preventDefault();
+      this.$emit("btn-click", this.id);
     },
   },
 };

@@ -19,6 +19,7 @@
                   class="form-control input_form"
                   id="username"
                   placeholder="Entrer votre nom d'utilisateur"
+                  v-model="loginFields.username"
                   required
                 />
               </div>
@@ -28,13 +29,16 @@
                   class="form-control input_form"
                   id="password"
                   placeholder="Entrer votre mot de passe"
+                  v-model="loginFields.password"
                   required
                 />
               </div>
             </div>
             <div class="container cont_btn">
               <p>{{ errorMessage }}</p>
-              <Button @btn-click="$emit('temp')" :style="'btn_submit'">Connexion</Button>
+              <Button @btn-click="login" :style="'btn_submit'" :disabled="btnDisabled"
+                >Connexion</Button
+              >
             </div>
           </form>
         </div>
@@ -45,15 +49,58 @@
 
 <script>
 import Button from "../../Button.vue";
+import { minLengthUsername, minLengthPassword, } from "../../../utils/VALIDATION";
 
 export default {
   name: "Login",
   components: {
     Button,
   },
-  created() {
-    this.errorMessage = "";
+  data() {
+    return {
+      errorMessage: "",
+      btnDisabled: true,
+      loginFields: {
+        username: null,
+        password: null,
+      },
+    };
+  },
+  methods: {
+    handleValidations(loginFields) {
+      if (
+      loginFields.username != null &&
+      loginFields.username.trim().length < minLengthUsername
+    ) {
+      this.errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
+      this.btnDisabled = true;
+    } else if (!["E", "S", "M", "G"].includes(loginFields.username.charAt(0))) {
+      this.errorMessage =
+        "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'";
+      this.btnDisabled = true;
+    } else if (
+      loginFields.password != null &&
+      loginFields.password.trim().length < minLengthPassword
+    ) {
+      this.errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
+      this.btnDisabled = true;
+    } else {
+      this.errorMessage = "";
+      this.btnDisabled = false;
+    }
+    },
+    login() {
+      console.log("login");
+    },
+  },
+  watch: {
+    loginFields: {
+     handler(loginFields){
+       this.handleValidations(loginFields);
+     },
+     deep: true
   }
+  },
 };
 </script>
 
