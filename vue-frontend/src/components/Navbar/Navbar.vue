@@ -14,12 +14,24 @@
     </button>
 
     <div class="collapse navbar-collapse ml" id="navbarcontent">
-      <ul class="navbar-nav" :key="url.key" v-for="url in urls">
-        <li class="nav-item">
-          <router-link class="nav-link" :to="{ path: url.link }">
-            {{ url.name }}
-          </router-link>
-        </li>
+      <ul class="navbar-nav">
+        <div v-if="!this.$store.getters.isAuthenticated">
+          <li class="nav-item" :key="url.key" v-for="url in urls">
+            <router-link class="nav-link" :to="{ path: url.link }">
+              {{ url.name }}
+            </router-link>
+          </li>
+        </div>
+        <div v-else>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/home">Accueil</router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="logout"
+              >Déconnexion</a
+            >
+          </li>
+        </div>
       </ul>
     </div>
   </nav>
@@ -27,19 +39,37 @@
 
 <script>
 import { HOME_PAGE_URL } from "../../utils/URL";
+import auth from "../../services/Auth";
+
+
 
 export default {
   name: "Navbar",
-  computed: {
-    urls() {
-      return HOME_PAGE_URL();
-    },
+  data() {
+    return {
+      urls: HOME_PAGE_URL,
+    };
   },
+  methods: {
+    logout() {
+      auth.login(() => this.$router.push("/"));
+    },
+  }
 };
 </script>
 
 <style>
-.navbar-nav{
-    margin: 0px
+.navbar-nav {
+  margin: 0px;
 }
+
+.navbar-nav div {
+  display: inline;
+}
+
+a {
+  cursor: pointer;
+}
+
+
 </style>

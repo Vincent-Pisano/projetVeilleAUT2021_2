@@ -1,35 +1,34 @@
+/* eslint-disable no-unused-vars */
+import store from "./Store";
+
 class Auth {
   constructor() {
-    if (sessionStorage.getItem("user") !== null) {
+    if (sessionStorage.getItem("user") !== null && sessionStorage.getItem("user") !== "undefined") {
       this.user = JSON.parse(sessionStorage.getItem("user"));
-      this.authenticated = true;
+      store.commit('setIsAuthenticated', true)
     } else {
       this.user = undefined;
-      this.authenticated = false;
+      store.commit('setIsAuthenticated', false)
     }
   }
 
   login(cb, user) {
-    this.authenticated = true;
     this.user = user;
     sessionStorage.setItem("user", JSON.stringify(this.user));
+    store.commit('setIsAuthenticated', true)
     cb();
   }
 
   logout(cb) {
-    this.authenticated = false;
     this.user = undefined;
     sessionStorage.removeItem("user");
+    store.commit('setIsAuthenticated', false)
     cb();
   }
 
   updateUser(user) {
     this.user = user;
     sessionStorage.setItem("user", JSON.stringify(this.user));
-  }
-
-  isAuthenticated() {
-    return this.authenticated;
   }
 
   isStudent() {

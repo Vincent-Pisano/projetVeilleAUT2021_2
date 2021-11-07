@@ -49,7 +49,11 @@
 
 <script>
 import Button from "../../Button.vue";
+import axios from "axios";
+import auth from "../../../services/Auth"
+import { URL_LOGIN } from "../../../utils/API";
 import { minLengthUsername, minLengthPassword, } from "../../../utils/VALIDATION";
+
 
 export default {
   name: "Login",
@@ -90,7 +94,34 @@ export default {
     }
     },
     login() {
-      console.log("login");
+      let type = "";
+      switch (this.loginFields.username.charAt(0)) {
+      case "E":
+        type = "student";
+        break;
+      case "S":
+        type = "supervisor";
+        break;
+      case "M":
+        type = "monitor";
+        break;
+      case "G":
+        type = "internshipManager";
+        break;
+    }
+
+    if (!this.btnDisabled) {
+      axios
+        .get(
+          URL_LOGIN + type + `/${this.loginFields.username}/${this.loginFields.password}`
+        )
+        .then((response) => {
+          auth.login(() => this.$router.push("/home"), response.data)
+        })
+        .catch(() => {
+          this.errorMessage = "Le nom d'utilisateur ou le courriel n'est pas valide.";
+        });
+    }
     },
   },
   watch: {
