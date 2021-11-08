@@ -47,7 +47,7 @@ export default {
   name: "Navbar",
   data() {
     return {
-      urls: HOME_PAGE_URL,
+      urls: HOME_PAGE_URL
     };
   },
   methods: {

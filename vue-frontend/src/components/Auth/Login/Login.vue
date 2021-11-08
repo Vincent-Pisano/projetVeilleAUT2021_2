@@ -36,7 +36,10 @@
             </div>
             <div class="container cont_btn">
               <p>{{ errorMessage }}</p>
-              <Button @btn-click="login" :style="'btn_submit'" :disabled="btnDisabled"
+              <Button
+                @btn-click="login"
+                :style="'btn_submit'"
+                :disabled="btnDisabled"
                 >Connexion</Button
               >
             </div>
@@ -50,10 +53,12 @@
 <script>
 import Button from "../../Button.vue";
 import axios from "axios";
-import auth from "../../../services/Auth"
+import auth from "../../../services/Auth";
 import { URL_LOGIN } from "../../../utils/API";
-import { minLengthUsername, minLengthPassword, } from "../../../utils/VALIDATION";
-
+import {
+  minLengthUsername,
+  minLengthPassword,
+} from "../../../utils/VALIDATION";
 
 export default {
   name: "Login",
@@ -73,64 +78,69 @@ export default {
   methods: {
     handleValidations(loginFields) {
       if (
-      loginFields.username != null &&
-      loginFields.username.trim().length < minLengthUsername
-    ) {
-      this.errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
-      this.btnDisabled = true;
-    } else if (!["E", "S", "M", "G"].includes(loginFields.username.charAt(0))) {
-      this.errorMessage =
-        "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'";
-      this.btnDisabled = true;
-    } else if (
-      loginFields.password != null &&
-      loginFields.password.trim().length < minLengthPassword
-    ) {
-      this.errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
-      this.btnDisabled = true;
-    } else {
-      this.errorMessage = "";
-      this.btnDisabled = false;
-    }
+        loginFields.username != null &&
+        loginFields.username.trim().length < minLengthUsername
+      ) {
+        this.errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
+        this.btnDisabled = true;
+      } else if (
+        !["E", "S", "M", "G"].includes(loginFields.username.charAt(0))
+      ) {
+        this.errorMessage =
+          "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'";
+        this.btnDisabled = true;
+      } else if (
+        loginFields.password != null &&
+        loginFields.password.trim().length < minLengthPassword
+      ) {
+        this.errorMessage = `Mot de passe doit être d'au moins ${minLengthPassword} charactères`;
+        this.btnDisabled = true;
+      } else {
+        this.errorMessage = "";
+        this.btnDisabled = false;
+      }
     },
     login() {
       let type = "";
       switch (this.loginFields.username.charAt(0)) {
-      case "E":
-        type = "student";
-        break;
-      case "S":
-        type = "supervisor";
-        break;
-      case "M":
-        type = "monitor";
-        break;
-      case "G":
-        type = "internshipManager";
-        break;
-    }
+        case "E":
+          type = "student";
+          break;
+        case "S":
+          type = "supervisor";
+          break;
+        case "M":
+          type = "monitor";
+          break;
+        case "G":
+          type = "internshipManager";
+          break;
+      }
 
-    if (!this.btnDisabled) {
-      axios
-        .get(
-          URL_LOGIN + type + `/${this.loginFields.username}/${this.loginFields.password}`
-        )
-        .then((response) => {
-          auth.login(() => this.$router.push("/home"), response.data)
-        })
-        .catch(() => {
-          this.errorMessage = "Le nom d'utilisateur ou le courriel n'est pas valide.";
-        });
-    }
+      if (!this.btnDisabled) {
+        axios
+          .get(
+            URL_LOGIN +
+              type +
+              `/${this.loginFields.username}/${this.loginFields.password}`
+          )
+          .then((response) => {
+            auth.login(() => this.$router.push("/home"), response.data);
+          })
+          .catch(() => {
+            this.errorMessage =
+              "Le nom d'utilisateur ou le courriel n'est pas valide.";
+          });
+      }
     },
   },
   watch: {
     loginFields: {
-     handler(loginFields){
-       this.handleValidations(loginFields);
-     },
-     deep: true
-  }
+      handler(loginFields) {
+        this.handleValidations(loginFields);
+      },
+      deep: true,
+    },
   },
 };
 </script>
