@@ -1,4 +1,5 @@
 <script>
+  import { currentUser } from "../services/Store";
   import auth from "../services/Auth";
   import CVList from "./CVList/CVList.svelte";
 
@@ -6,9 +7,8 @@
   if (location == null) {
     console.error("an Error occured during the routing");
   }
-
-  let user = auth.user;
-  let dateFormat = formatDate(user.creationDate);
+  
+  let dateFormat = formatDate($currentUser.creationDate);
   let src = "images/user_icon.png";
 
   function formatDate(dateString) {
@@ -25,10 +25,10 @@
         <div class="mx-2">
           <img class="card-img-top" {src} alt="user icon">
           <div class="card-body">
-            <h5 class="card-title">Nom d'utilisateur: {user.username}</h5>
-            <h5 class="card-text">Prénom: {user.firstName}</h5>
-            <h5 class="card-text">Nom: {user.lastName}</h5>
-            <h5 class="card-text">Adresse courriel: {user.email}</h5>
+            <h5 class="card-title">Nom d'utilisateur: {$currentUser.username}</h5>
+            <h5 class="card-text">Prénom: {$currentUser.firstName}</h5>
+            <h5 class="card-text">Nom: {$currentUser.lastName}</h5>
+            <h5 class="card-text">Adresse courriel: {$currentUser.email}</h5>
             <h5 class="card-text">Depuis {dateFormat}</h5>
           </div>
         </div>
@@ -36,7 +36,7 @@
     </div>
     {#if auth.isStudent()}
       <div class="col-xs-12 col-lg-8" v-if="">
-        <CVList CVList={user.cvlist}/>
+        <CVList CVList={$currentUser.cvlist}/>
       </div>
     {/if}
   </div>

@@ -1,50 +1,55 @@
-import { isAuthenticated } from "./Store";
+import { isAuthenticated, currentUser } from "./Store";
 
 class Auth {
   constructor() {
-    if (sessionStorage.getItem("user") !== null) {
-      this.user = JSON.parse(sessionStorage.getItem("user"));
+    if (sessionStorage.getItem("currentUser") !== null) {
+      currentUser.update(() => JSON.parse(sessionStorage.getItem("currentUser")));
       isAuthenticated.update(isAuthenticated => isAuthenticated = true);
     } else {
-      this.user = undefined;
+      currentUser.update(() => undefined)
       isAuthenticated.update(isAuthenticated => isAuthenticated = false);
     }
   }
 
-  login(cb, user) {
-    this.user = user;
-    sessionStorage.setItem("user", JSON.stringify(this.user));
+  login(cb, newUser) {
+    currentUser.update(() => newUser);
+    sessionStorage.setItem("currentUser", JSON.stringify(this.getUser()));
     isAuthenticated.update(isAuthenticated => isAuthenticated = true);
     cb();
   }
 
   logout(cb) {
-    sessionStorage.removeItem("user");
-    this.user = undefined;
-    isAuthenticated.update(isAuthenticated => isAuthenticated = false);
     cb();
+    sessionStorage.removeItem("currentUser");
+    currentUser.update(() => undefined);
+    isAuthenticated.update(isAuthenticated => isAuthenticated = false);
   }
 
-  updateUser(user) {
-    this.user = user;
-    sessionStorage.setItem("user", JSON.stringify(this.user));
+  updateUser(newUser) {
+    currentUser.update(() =>  newUser);
+    sessionStorage.setItem("currentUser", JSON.stringify(this.getUser()));
+  }
+
+  getUser() {
+    let $val
+    currentUser.subscribe($ => $val = $)()
+    return $val
   }
 
   isStudent() {
-
-    return isAuthenticated ? this.user.username.startsWith("E") : false;
+    return isAuthenticated ? this.getUser().username.startsWith("E") : false;
   }
 
   isSupervisor() {
-    return isAuthenticated ? this.user.username.startsWith("S") : false;
+    return isAuthenticated ? this.getUser().username.startsWith("S") : false;
   }
 
   isMonitor() {
-    return isAuthenticated ? this.user.username.startsWith("M") : false;
+    return isAuthenticated ? this.getUser().username.startsWith("M") : false;
   }
 
   isInternshipManager() {
-    return isAuthenticated ? this.user.username.startsWith("G") : false;
+    return isAuthenticated ? this.getUser().username.startsWith("G") : false;
   }
 }
 

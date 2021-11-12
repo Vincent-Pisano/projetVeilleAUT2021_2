@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3007")
+@CrossOrigin("http://localhost:5000")
 public class CVController {
 
     private final CVService service;

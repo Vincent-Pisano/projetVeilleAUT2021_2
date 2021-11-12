@@ -21,8 +21,8 @@
         </thead>
         <tbody>
           {#if CVList.length > 0}
-            {#each CVList as cv, key}
-                <CVItem {cv} {key}/>
+            {#each CVList as cv}
+                <CVItem {cv}/>
             {/each}
           {:else}
             <tr>
@@ -32,7 +32,10 @@
         </tbody>
       </table>
     </div>
-    <CVButtonDeposit />
+    {#if CVList.length < 10}
+        <CVButtonDeposit/>
+    {/if}
+    
   </div>
 </div>
 
