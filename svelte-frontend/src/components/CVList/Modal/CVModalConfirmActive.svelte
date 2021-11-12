@@ -3,18 +3,18 @@
   import axios from "axios";
   import { currentUser } from "../../../services/Store";
   import auth from "../../../services/Auth";
-  import { URL_DELETE_CV } from "../../../utils/API";
+  import { URL_ACTIVE_CV } from "../../../utils/API";
 
   export let isOpen;
   export let cv;
   let errorMessage = "";
   let btnDisabled = false;
 
-  function deleteCV() {
+  function activeCV() {
     axios
-      .delete(`${URL_DELETE_CV}/${$currentUser.id}/${cv.id}`)
+      .post(`${URL_ACTIVE_CV}/${$currentUser.id}/${cv.id}`)
       .then((response) => {
-        errorMessage = "Confirmation de la suppression";
+        errorMessage = "Confirmation de la mise à jour";
         btnDisabled = true;
         setTimeout(() => {
           isOpen = false;
@@ -22,7 +22,7 @@
         }, 2000);
       })
       .catch((error) => {
-        errorMessage = "Erreur lors de la suppression de CV...";
+        errorMessage = "Erreur lors de la mise à jour de CV...";
       });
   }
 </script>
@@ -30,7 +30,7 @@
 <Modal bind:open={isOpen}>
   <div class="modal-header">
     <h5 class="modal-title" style="color:black;">
-      Êtes-vous certain de supprimer ce CV ?
+      Êtes-vous certain de mettre ce CV actif ?
     </h5>
   </div>
   <div class="modal-body">
@@ -44,7 +44,7 @@
         <button
           type="button"
           class="btn btn-success"
-          on:click={deleteCV}
+          on:click={activeCV}
           disabled={btnDisabled}>Oui</button
         >
       </div>

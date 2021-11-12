@@ -16,7 +16,7 @@
         <CVButtonDelete {cv}/>
     </td>
     <td>
-        <CVButtonActive/>
+        <CVButtonActive {cv}/>
     </td>
     <td>ICON</td>
 </tr>
