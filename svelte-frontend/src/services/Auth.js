@@ -31,19 +31,20 @@ class Auth {
   }
 
   isStudent() {
-    return this.authenticated ? this.user.username.startsWith("E") : false;
+
+    return isAuthenticated ? this.user.username.startsWith("E") : false;
   }
 
   isSupervisor() {
-    return this.authenticated ? this.user.username.startsWith("S") : false;
+    return isAuthenticated ? this.user.username.startsWith("S") : false;
   }
 
   isMonitor() {
-    return this.authenticated ? this.user.username.startsWith("M") : false;
+    return isAuthenticated ? this.user.username.startsWith("M") : false;
   }
 
   isInternshipManager() {
-    return this.authenticated ? this.user.username.startsWith("G") : false;
+    return isAuthenticated ? this.user.username.startsWith("G") : false;
   }
 }
 

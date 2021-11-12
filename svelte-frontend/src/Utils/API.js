@@ -1,4 +1,4 @@
-let url = "http://localhost:9191/"
+let url = "http://localhost:9292/"
 
 export let URL_LOGIN = url + "login/";
 export let URL_SIGN_UP_STUDENT = url + "/signUp/student";
