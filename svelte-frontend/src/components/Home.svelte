@@ -1,5 +1,6 @@
 <script>
   import auth from "../services/Auth";
+  import CVList from "./CVList/CVList.svelte";
 
   export let location;
   if (location == null) {
@@ -19,7 +20,7 @@
 
 <div class="container cont_home mb-5">
   <div class="row cont_central">
-    <div class="col-xs-12 col-md-4">
+    <div class="col-xs-12 col-lg-4">
       <div class="card bg-secondary text-white p-2" style="width: 18rem;">
         <div class="mx-2">
           <img class="card-img-top" {src} alt="user icon">
@@ -34,8 +35,8 @@
       </div>
     </div>
     {#if auth.isStudent()}
-      <div class="col-xs-12 col-md-8" v-if="">
-        One of three columns
+      <div class="col-xs-12 col-lg-8" v-if="">
+        <CVList CVList={user.cvlist}/>
       </div>
     {/if}
   </div>
@@ -49,5 +50,9 @@
     transition: all 0.5s;
     width: 95%;
     margin: 5% auto;
+  }
+
+  .card {
+    margin: 1% auto;
   }
 </style>
