@@ -1,4 +1,3 @@
-
 <script>
     import Button from "../../Button.svelte";
     import CVModalDeposit from "../Modal/CVModalDeposit.svelte";

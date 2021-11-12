@@ -26,7 +26,7 @@
     ) {
       errorMessage = `Nom d'utilisateur doit être d'au moins ${minLengthUsername} charactères`;
       btnDisabled = true;
-    } else if (!["E", "S", "M", "G"].includes(loginFields.username.charAt(0))) {
+    } else if (loginFields.username != null && !["E", "S", "M", "G"].includes(loginFields.username.charAt(0))) {
       errorMessage =
         "Les noms d'utilisateurs commencent par 'E', 'S', 'M' ou 'G'";
       btnDisabled = true;
@@ -38,7 +38,8 @@
       btnDisabled = true;
     } else {
       errorMessage = "";
-      btnDisabled = false;
+      if (loginFields.username != null && loginFields.password != null)
+        btnDisabled = false;
     }
   };
 
@@ -69,7 +70,7 @@
           }, response.data)
         })
         .catch((error) => {
-          errorMessage = "Le nom d'utilisateur ou le courriel existe déjà.";
+          errorMessage = "Le nom d'utilisateur ou le mot de passe est incorrect.";
         });
     }
   };
