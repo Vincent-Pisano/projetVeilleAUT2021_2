@@ -14,3 +14,4 @@ export let URL_ACTIVE_CV = url + "/update/ActiveCV";
 
 //Student List
 export let URL_GET_ALL_STUDENT_CV_NOT_VALID = url + "/getAll/student/CVActiveNotValid";
+export let URL_VALID_CV_ACTIVE = url + "/validate/CV";

@@ -1,23 +1,37 @@
 <script>
   import Modal from "sv-bootstrap-modal";
-  import { URL_DOWNLOAD_CV } from "../../../Utils/API";
+  import { URL_DOWNLOAD_CV } from "../../../Utils/API";  
+  import { createEventDispatcher } from 'svelte';
+  import { URL_VALID_CV_ACTIVE } from "../../../Utils/API";
+  import axios from "axios"
+
+  const dispatch = createEventDispatcher();
 
   export let isOpen;
   export let currentStudent;
   let errorMessage = "";
   let btnDisabled = false;
 
-  console.log(currentStudent)
-
   function validCV() {
-    console.log("test");
+    axios
+      .post(`${URL_VALID_CV_ACTIVE}/${currentStudent.id}`)
+      .then((response) => {
+        setTimeout(() => {
+            errorMessage = ""
+            dispatch("valid-cv")
+        }, 2000);
+        errorMessage = "Confirmation de la validation";
+      })
+      .catch((error) => {
+        errorMessage = "Erreur durant la validation du CV";
+      });
   }
 </script>
 
 <Modal bind:open={isOpen}>
   <div class="modal-header">
     <h5 class="modal-title" style="color:black;">
-      Voulez-vous confirmer le cv de l'étudiant choisi ?
+      Voulez-vous confirmer le cv de {currentStudent.firstName} {currentStudent.lastName} ?
     </h5>
   </div>
   <div class="modal-body">
