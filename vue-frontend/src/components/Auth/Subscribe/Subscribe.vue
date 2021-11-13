@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .cont_principal {
   display: flex;
   justify-content: center;

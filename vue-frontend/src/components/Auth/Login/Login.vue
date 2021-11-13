@@ -97,7 +97,8 @@ export default {
         this.btnDisabled = true;
       } else {
         this.errorMessage = "";
-        this.btnDisabled = false;
+        if (loginFields.username != null && loginFields.password != null)
+          this.btnDisabled = false;
       }
     },
     login() {
