@@ -5,6 +5,7 @@
   import Home from "./components/Home.svelte";
   import Login from "./components/Auth/Login/Login.svelte";
   import Subscribe from "./components/Auth/Subscribe/Subscribe.svelte";
+  import StudentListValidCV from "./components/StudentList/List/StudentListValidCV.svelte";
 
   export let url = "";
 
@@ -17,6 +18,7 @@
       <Route path="/" component={Login} />
       <Route path="/subscribe" component={Subscribe} />
       <ProtectedRoute path="/home" component={Home} />
+      <ProtectedRoute path="/studentList/validation/cv" component={StudentListValidCV} />
       <Route component={Login} />
     </div>
   </Router>

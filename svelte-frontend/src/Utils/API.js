@@ -11,3 +11,6 @@ export let URL_DEPOSIT_CV = url + "/save/CV";
 export let URL_DOWNLOAD_CV = url + "/get/CV/document";
 export let URL_DELETE_CV = url + "/delete/CV"; 
 export let URL_ACTIVE_CV = url + "/update/ActiveCV"; 
+
+//Student List
+export let URL_GET_ALL_STUDENT_CV_NOT_VALID = url + "/getAll/student/CVActiveNotValid";

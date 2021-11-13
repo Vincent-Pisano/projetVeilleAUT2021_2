@@ -5,7 +5,7 @@
 
   export let location;
   if (location == null) {
-    console.error("an Error occured during the routing");
+    console.error("an error occured during the routing");
   }
   
   let dateFormat = formatDate($currentUser.creationDate);

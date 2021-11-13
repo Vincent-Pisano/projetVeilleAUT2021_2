@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://localhost:3007")
+@CrossOrigin("http://localhost:5000")
 public class InternshipController {
 
     private final InternshipService service;

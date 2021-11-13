@@ -18,7 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3007")
+@CrossOrigin("http://localhost:5000")
 public class BackendController {
 
     private final BackendService service;
