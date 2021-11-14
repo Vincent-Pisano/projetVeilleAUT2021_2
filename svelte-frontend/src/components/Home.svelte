@@ -35,7 +35,7 @@
       </div>
     </div>
     {#if auth.isStudent()}
-      <div class="col-xs-12 col-lg-8" v-if="">
+      <div class="col-xs-12 col-lg-8">
         <CVList CVList={$currentUser.cvlist}/>
       </div>
     {/if}

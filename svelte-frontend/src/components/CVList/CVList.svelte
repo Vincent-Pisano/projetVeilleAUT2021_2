@@ -1,13 +1,14 @@
 <script>
   import CVButtonDeposit from "./Button/CVButtonDeposit.svelte";
   import CVItem from "./CVItem.svelte";
+  import { TITLE_STUDENT_LIST_CV } from "../../Utils/TITLE"
 
   export let CVList;
 </script>
 
 <div class="container cont_list_cv">
   <div class="container cont_list_centrar">
-    <h2 class="cont_title_form">Liste de vos CVs</h2>
+    <h2 class="cont_title_form">{TITLE_STUDENT_LIST_CV}</h2>
     <div class="containe cont_list">
       <table class="table table-dark table-striped table-bordered table-hover table-responsive">
         <thead>

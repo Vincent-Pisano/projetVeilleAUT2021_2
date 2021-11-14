@@ -27,10 +27,10 @@ const INTERNSHIP_MANAGER_URL = HOME_URL.concat([
   }
 ]);
 
-const STUDENT_URL = [  ];
+const STUDENT_URL = HOME_URL.concat([  ]);
 
-const MONITOR_URL = [  ];
+const MONITOR_URL = HOME_URL.concat([  ]);
 
-const SUPERVISOR_URL = [  ];
+const SUPERVISOR_URL = HOME_URL.concat([  ]);
 
 export { HOME_PAGE_URL, INTERNSHIP_MANAGER_URL, STUDENT_URL, MONITOR_URL, SUPERVISOR_URL };
