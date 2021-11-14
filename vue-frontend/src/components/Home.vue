@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-lg-8">
-          <p v-if="isStudent">{{isStudent}}</p>
+          <CVList />
       </div>
     </div>
   </div>
@@ -25,6 +25,7 @@
 <script>
 import auth from "../services/Auth";
 import user_icon from "../assets/user_icon.png";
+import CVList from "./CVList/CVList.vue"
 
 export default {
   name: "Home",
@@ -35,6 +36,9 @@ export default {
       src: user_icon,
       dateFormat: "",
     };
+  },
+  components: {
+      CVList,
   },
   methods: {
     formatDate: function () {
