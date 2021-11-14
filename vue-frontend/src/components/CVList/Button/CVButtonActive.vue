@@ -2,7 +2,7 @@
   <button class="btn btn-sm btn-warning" @click="showModal" :disabled="cv.isActive">
     {{cv.isActive ? "Déjà Actif" : "Mettre Actif"}}
   </button>
-  <CVModalConfirmActive v-if="displayModal" @close-modal-event="hideModal" />
+  <CVModalConfirmActive v-if="displayModal" @close-modal-event="hideModal" :cv="cv"/>
 
 </template>
 

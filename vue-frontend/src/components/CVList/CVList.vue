@@ -23,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <CVItem v-for="(cv, i) in CVList" :key="i" :cv="cv" />
+            <CVItem v-for="cv in CVList" :key="cv.id" :cv="cv" />
             <tr v-if="CVList.length == 0">
               <td colspan="5">Pas de CV</td>
             </tr>

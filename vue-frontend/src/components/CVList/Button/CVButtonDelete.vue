@@ -2,7 +2,7 @@
   <button class="btn btn-sm btn-danger" @click="showModal">
     supprimer
   </button>
-  <CVModalConfirmDelete v-if="displayModal" @close-modal-event="hideModal" />
+  <CVModalConfirmDelete v-if="displayModal" @close-modal-event="hideModal" :cv="cv"/>
 
 </template>
 
@@ -28,6 +28,7 @@ export default {
     },
     hideModal() {
       this.displayModal = false;
+      this.$emit("delete-cv");
     },
   },
 };

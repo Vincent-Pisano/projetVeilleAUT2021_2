@@ -5,7 +5,7 @@
       <CVButtonDownload :cv="cv" />
     </td>
     <td>
-      <CVButtonDelete :cv="cv" />
+      <CVButtonDelete :cv="cv"/>
     </td>
     <td>
       <CVButtonActive :cv="cv" />
