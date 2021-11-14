@@ -29,7 +29,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .btn_submit {
   background: rgba(255, 64, 88, 0.74);
   box-shadow: 0px 2px 20px 2px rgba(255, 114, 132, 0.5);

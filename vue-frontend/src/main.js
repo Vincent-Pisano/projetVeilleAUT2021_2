@@ -1,22 +1,27 @@
 import { createApp } from 'vue'
 //import Vue from 'vue'
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCheck, faTimes, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import App from './App.vue'
 import router from './router'
 import store from './services/Store'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
-//import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+let icons = [
+    faTimes,
+    faCheck,
+    faSyncAlt
+]
 
-// Make BootstrapVue available throughout your project
-// Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
-// Vue.use(IconsPlugin)
+icons.forEach(icon => library.add(icon));
 
 createApp(App)
     .use(router)
     .use(store)
+    .use(FontAwesomeIcon)
     //.use(BootstrapVue)
     .mount('#app')
 
