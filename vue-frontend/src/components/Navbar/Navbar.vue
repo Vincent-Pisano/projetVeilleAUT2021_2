@@ -15,37 +15,45 @@
 
     <div class="collapse navbar-collapse ml" id="navbarcontent">
       <ul class="navbar-nav">
-        <div v-if="isNotAuthenticated">
-          <li class="nav-item" :key="url.key" v-for="url in urls">
+        <span v-if="isNotAuthenticated">
+          <li class="nav-item" :key="url.key" v-for="url in base_url">
             <router-link class="nav-link" :to="{ path: url.link }">
               {{ url.name }}
             </router-link>
           </li>
-        </div>
-        <div v-else>
+        </span>
+        <span v-else>
           <li class="nav-item">
-            <router-link class="nav-link" to="/home">Accueil</router-link>
+            <DropdownNavbar :urls="urls" />
           </li>
           <li class="nav-item">
-            <a class="nav-link" @click="logout"
-              >Déconnexion</a
-            >
+            <a class="nav-link" @click="logout">Déconnexion</a>
           </li>
-        </div>
+        </span>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
-import { HOME_PAGE_URL } from "../../utils/URL";
+import {
+  HOME_PAGE_URL,
+  STUDENT_URL,
+  SUPERVISOR_URL,
+  MONITOR_URL,
+  INTERNSHIP_MANAGER_URL,
+} from "../../utils/URL";
 import auth from "../../services/Auth";
+import DropdownNavbar from "./DropdownNavbar.vue"
 
 export default {
   name: "Navbar",
+  components: {
+    DropdownNavbar
+  },
   data() {
     return {
-      urls: HOME_PAGE_URL
+      base_url: HOME_PAGE_URL
     };
   },
   methods: {
@@ -53,11 +61,27 @@ export default {
       auth.logout(() => this.$router.push("/"));
     },
   },
-   computed: {
-     isNotAuthenticated() {
-       return !this.$store.getters.isAuthenticated;
-     }
-   }
+  created () {
+    console.log(this.urls);
+  },
+  computed: {
+    isNotAuthenticated() {
+      return !this.$store.getters.isAuthenticated;
+    },
+    urls() {
+      return this.$store.getters.isAuthenticated
+        ? auth.isStudent()
+          ? STUDENT_URL
+          : auth.isSupervisor()
+          ? SUPERVISOR_URL
+          : auth.isMonitor()
+          ? MONITOR_URL
+          : auth.isInternshipManager()
+          ? INTERNSHIP_MANAGER_URL
+          : []
+        : []
+    },
+  },
 };
 </script>
 
@@ -66,13 +90,7 @@ export default {
   margin: 0px;
 }
 
-.navbar-nav div {
-  display: inline;
-}
-
 a {
   cursor: pointer;
 }
-
-
 </style>

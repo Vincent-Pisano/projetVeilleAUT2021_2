@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-lg-8">
-          <CVList />
+          <CVList v-if="isStudent"/>
       </div>
     </div>
   </div>

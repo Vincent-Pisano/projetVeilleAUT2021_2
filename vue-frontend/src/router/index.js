@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../services/Store";
 import Home from "../views/Home";
-import Login from "../views/Login";
-import Subscribe from "../views/Subscribe";
+import Login from "../views/Auth/Login";
+import Subscribe from "../views/Auth/Subscribe";
+import StudentListValidCV from "../views/StudentList/StudentListValidCV";
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: "/home",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/studentList/validation/cv",
+    name: "StudentListValidCV",
+    component: StudentListValidCV,
   },
   {
     path: "/:pathMatch(.*)",

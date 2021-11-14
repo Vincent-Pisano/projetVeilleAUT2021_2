@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Subscribe from "../components/Auth/Subscribe/Subscribe.vue";
+import Subscribe from "../../components/Auth/Subscribe/Subscribe.vue";
 
 export default {
   components: {
