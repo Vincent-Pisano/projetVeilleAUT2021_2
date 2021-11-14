@@ -21,6 +21,8 @@
           errorMessage = "Confirmation du dépôt";
           btnDisabled = true;
           setTimeout(() => {
+            errorMessage = "";
+            btnDisabled = false;
             isOpen = false;
           }, 2000);
         })
