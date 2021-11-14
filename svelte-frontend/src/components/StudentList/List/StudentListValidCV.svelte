@@ -1,6 +1,6 @@
 <script>
   import StudentList from "../StudentList.svelte";
-  import StudentListModalValidCV from "../Modal/StudentListModalValidCV.svelte";
+  import StudentModalValidCV from "../Modal/StudentModalValidCV.svelte";
   import { TITLE_STUDENT_LIST_VALID_CV } from "../../../Utils/TITLE";
   import { URL_GET_ALL_STUDENT_CV_NOT_VALID } from "../../../Utils/API";
   import axios from "axios";
@@ -50,7 +50,7 @@
   {errorMessage}
   on:click={changeCurrentStudent}
 />
-<StudentListModalValidCV {isOpen} {currentStudent} on:valid-cv={validCV} />
+<StudentModalValidCV {isOpen} {currentStudent} on:valid-cv={validCV} />
 
 <style>
 </style>

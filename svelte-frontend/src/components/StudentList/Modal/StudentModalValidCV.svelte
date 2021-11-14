@@ -1,8 +1,8 @@
 <script>
   import Modal from "sv-bootstrap-modal";
-  import { URL_DOWNLOAD_CV } from "../../../Utils/API";  
+  import { URL_DOWNLOAD_CV } from "../../../utils/API";  
   import { createEventDispatcher } from 'svelte';
-  import { URL_VALID_CV_ACTIVE } from "../../../Utils/API";
+  import { URL_VALID_CV_ACTIVE } from "../../../utils/API";
   import axios from "axios"
 
   const dispatch = createEventDispatcher();
