@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      user: auth.user,
+      user: auth.getUser(),
       url: URL_DOWNLOAD_CV,
     };
   },

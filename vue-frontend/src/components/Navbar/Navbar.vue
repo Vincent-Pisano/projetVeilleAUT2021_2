@@ -15,7 +15,7 @@
 
     <div class="collapse navbar-collapse ml" id="navbarcontent">
       <ul class="navbar-nav">
-        <div v-if="!this.$store.getters.isAuthenticated">
+        <div v-if="isNotAuthenticated">
           <li class="nav-item" :key="url.key" v-for="url in urls">
             <router-link class="nav-link" :to="{ path: url.link }">
               {{ url.name }}
@@ -41,8 +41,6 @@
 import { HOME_PAGE_URL } from "../../utils/URL";
 import auth from "../../services/Auth";
 
-
-
 export default {
   name: "Navbar",
   data() {
@@ -52,9 +50,14 @@ export default {
   },
   methods: {
     logout() {
-      auth.login(() => this.$router.push("/"));
+      auth.logout(() => this.$router.push("/"));
     },
-  }
+  },
+   computed: {
+     isNotAuthenticated() {
+       return !this.$store.getters.isAuthenticated;
+     }
+   }
 };
 </script>
 

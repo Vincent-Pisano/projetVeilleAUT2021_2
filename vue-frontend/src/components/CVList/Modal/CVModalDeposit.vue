@@ -73,7 +73,7 @@ export default {
       document: undefined,
       errorMessage: "",
       btnDisabled: false,
-      currentUser: auth.user
+      currentUser: auth.getUser()
     };
   },
   methods: {

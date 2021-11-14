@@ -23,14 +23,14 @@
             </tr>
           </thead>
           <tbody>
-            <CVItem v-for="cv in CVList" :key="cv.id" :cv="cv" />
-            <tr v-if="CVList.length == 0">
+            <CVItem v-for="cv in getCVList" :key="cv.id" :cv="cv" />
+            <tr v-if="getCVList.length == 0">
               <td colspan="5">Pas de CV</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div v-if="CVList.length < 10">
+      <div v-if="getCVListLimit">
         <CVButtonDeposit />
       </div>
     </div>
@@ -40,7 +40,7 @@
 <script>
 import CVButtonDeposit from "./Button/CVButtonDeposit.vue";
 import CVItem from "./CVItem.vue";
-import auth from "../../services/Auth";
+//import auth from "../../services/Auth";
 import { TITLE_STUDENT_LIST_CV } from "../../utils/TITLE";
 
 export default {
@@ -51,10 +51,17 @@ export default {
   },
   data() {
     return {
-      CVList: auth.user.cvlist,
       title: TITLE_STUDENT_LIST_CV,
     };
   },
+   computed: {
+     getCVList() {
+       return this.$store.getters.user !== undefined ? this.$store.getters.user.cvlist : [];
+     },
+     getCVListLimit() {
+       return this.getCVList.length < 10;
+     }
+}
 };
 </script>
 

@@ -31,7 +31,7 @@ export default {
   name: "Home",
   data() {
     return {
-      user: auth.user,
+      user: auth.getUser(),
       isStudent: auth.isStudent(),
       src: user_icon,
       dateFormat: "",
