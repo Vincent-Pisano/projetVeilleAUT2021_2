@@ -15,7 +15,6 @@ const store = createStore({
   },
   mutations: {
     setIsAuthenticated(state, value) {
-      console.log("changement isAuthenticated")
       state.isAuthenticated = value;
     },
   },

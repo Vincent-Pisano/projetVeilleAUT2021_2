@@ -2,10 +2,10 @@
     <tr>
   <td>{{document.name}}</td>
   <td>
-    <CVButtonDownload />
+    <CVButtonDownload :cv="cv"/>
   </td>
   <td>
-    <CVButtonDelete />
+    <CVButtonDelete :cv="cv"/>
   </td>
   <td>
     <CVButtonActive />

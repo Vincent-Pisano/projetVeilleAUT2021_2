@@ -1,7 +1,7 @@
 <template>
   <div class="container cont_list_cv">
     <div class="container cont_list_centrar">
-      <h2 class="cont_title_form">Liste de vos CVs</h2>
+      <h2 class="cont_title_form">{{ title }}</h2>
       <div class="containe cont_list">
         <table
           class="
@@ -41,16 +41,18 @@
 import CVButtonDeposit from "./Button/CVButtonDeposit.vue";
 import CVItem from "./CVItem.vue";
 import auth from "../../services/Auth";
+import { TITLE_STUDENT_LIST_CV } from "../../utils/TITLE";
 
 export default {
   name: "CVList",
   components: {
     CVButtonDeposit,
-    CVItem
+    CVItem,
   },
   data() {
     return {
       CVList: auth.user.cvlist,
+      title: TITLE_STUDENT_LIST_CV,
     };
   },
 };
