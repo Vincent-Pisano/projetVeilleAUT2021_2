@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheck, faTimes, faSyncAlt } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faSyncAlt, faLaptopCode, faLandmark, faStethoscope, faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import App from './App.vue'
 import router from './router'
 import store from './services/Store'
@@ -13,7 +13,11 @@ import "bootstrap"
 let icons = [
     faTimes,
     faCheck,
-    faSyncAlt
+    faSyncAlt,
+    faLaptopCode,
+    faLandmark,
+    faStethoscope,
+    faUserCircle
 ]
 
 icons.forEach(icon => library.add(icon));

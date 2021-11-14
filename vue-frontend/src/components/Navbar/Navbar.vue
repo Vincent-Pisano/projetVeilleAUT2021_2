@@ -61,9 +61,6 @@ export default {
       auth.logout(() => this.$router.push("/"));
     },
   },
-  created () {
-    console.log(this.urls);
-  },
   computed: {
     isNotAuthenticated() {
       return !this.$store.getters.isAuthenticated;
