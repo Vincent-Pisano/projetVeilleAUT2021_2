@@ -7,6 +7,7 @@
   import Subscribe from "./components/Auth/Subscribe/Subscribe.svelte";
   import StudentListValidCV from "./components/StudentList/List/StudentListValidCV.svelte";
   import InternshipOfferForm from "./components/InternshipOfferForm/InternshipOfferForm.svelte";
+  import InternshipOfferListValidation from "./components/InternshipOfferList/List/InternshipOfferListValidation.svelte";
 
   export let url = "";
 
@@ -21,6 +22,8 @@
       <ProtectedRoute path="/home" component={Home} />
       <ProtectedRoute path="/studentList/validation/cv" component={StudentListValidCV} />
       <ProtectedRoute path="/internshipOffer/form/deposit" component={InternshipOfferForm} />
+      <ProtectedRoute path="/internshipOffer/form/validation" component={InternshipOfferForm} />
+      <ProtectedRoute path="/internshipOfferList/validation" component={InternshipOfferListValidation} />
       <Route component={Login} />
     </div>
   </Router>

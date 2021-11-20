@@ -24,6 +24,11 @@ const INTERNSHIP_MANAGER_URL = HOME_URL.concat([
     key: "VALID_CV",
     link: "/studentList/validation/cv",
     name: "Validation CV étudiant",
+  },
+  {
+    key: "VALID_INTERNSHIP_OFFER",
+    link: "/internshipOfferList/validation",
+    name: "Validation d'offre de stage",
   }
 ]);
 

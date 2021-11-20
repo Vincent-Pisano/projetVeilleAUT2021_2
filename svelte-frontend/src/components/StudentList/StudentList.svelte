@@ -1,8 +1,5 @@
 <script>
   import StudentItem from "./StudentItem.svelte";
-  import { createEventDispatcher } from 'svelte';
-
-  const dispatch = createEventDispatcher();
 
   export let title;
   export let students;

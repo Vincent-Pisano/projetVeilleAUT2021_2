@@ -57,7 +57,7 @@
       {:else}
         {#each base_urls as url}
           <li class="nav-item">
-            <Link class="nav-link" to={url.link}>{url.name}</Link>
+            <Link class="nav-link" to={url.link} replace={true}>{url.name} </Link>
           </li>
         {/each}
       {/if}

@@ -2,7 +2,10 @@
   import { TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT } from "../../Utils/TITLE";
   import axios from "axios";
   import { navigate } from "svelte-routing";
-  import { URL_DEPOSIT_INTERNSHIP_OFFER } from "../../Utils/API";
+  import {
+    URL_DEPOSIT_INTERNSHIP_OFFER,
+    URL_VALIDATE_INTERNSHIP_OFFER,
+  } from "../../Utils/API";
   import DEPARTMENT from "../../Utils/DEPARTMENT";
   import WORKSHIFT from "../../Utils/WORKSHIFT";
   import WORKDAYS from "../../Utils/WORKDAYS";
@@ -15,23 +18,34 @@
   }
 
   $: errorMessage = "";
-  let btnDisabled = true;
-  let internshipOffer = {
-    jobName: "TEST",
-    description: "",
-    startDate: "",
-    endDate: "",
-    weeklyWorkTime: "",
-    hourlySalary: "",
-    workDays: [],
-    address: "",
-    city: "",
-    postalCode: "",
-    workShift: WORKSHIFT[0].key,
-    workField: DEPARTMENT[0].key,
-    monitor: {},
-  };
+  let isInternshipOfferPassed = location.state.id !== undefined;
+  let btnDisabled = isInternshipOfferPassed ? false : true;
+  let internshipOffer = isInternshipOfferPassed
+    ? location.state
+    : {
+        jobName: "TEST",
+        description: "",
+        startDate: "",
+        endDate: "",
+        weeklyWorkTime: "",
+        hourlySalary: "",
+        workDays: [],
+        address: "",
+        city: "",
+        postalCode: "",
+        workShift: WORKSHIFT[0].key,
+        workField: DEPARTMENT[0].key,
+        monitor: {},
+      };
   let workdays = WORKDAYS;
+
+  if (isInternshipOfferPassed) {
+    formatDates();
+    workdays.forEach(
+      (workday) =>
+        (workday.value = internshipOffer.workDays.includes(workday.key))
+    );
+  }
 
   function formatDates() {
     if (internshipOffer) {
@@ -103,10 +117,7 @@
     }
   };
 
-  const setData = () => {};
-
   const depositInternshipOffer = () => {
-    formatDates();
     internshipOffer.monitor = $currentUser;
     let internshipWorkdays = workdays.filter((workday) => workday.value);
     internshipWorkdays.forEach((workday) =>
@@ -132,6 +143,22 @@
         });
     }
   };
+
+  const validateInternshipOffer = () => {
+    console.log("test");
+    axios
+      .post(URL_VALIDATE_INTERNSHIP_OFFER + internshipOffer.id)
+      .then((response) => {
+        errorMessage =
+          "L'offre de stage a été validée, vous allez être redirigé";
+        setTimeout(() => {
+          navigate("/internshipOfferList/validation");
+        }, 2000);
+      })
+      .catch((error) => {
+        errorMessage = "Erreur lors de la validation";
+      });
+  };
 </script>
 
 <div class="container cont_principal">
@@ -143,7 +170,7 @@
         </div>
       </div>
       <div class="row">
-        <fieldset>
+        <fieldset disabled={isInternshipOfferPassed}>
           <form>
             <div class="cont_inputs">
               <div class="form-group">
@@ -329,14 +356,24 @@
               >
                 {errorMessage}
               </p>
-              <Button
-                style="btn_submit"
-                type="submit"
-                disabled={btnDisabled}
-                on:handle-click={depositInternshipOffer}
-              >
-                Confirmer
-              </Button>
+              {#if isInternshipOfferPassed}
+                <Button
+                  style="btn_submit"
+                  type="submit"
+                  on:handle-click={validateInternshipOffer}
+                >
+                  Valider
+                </Button>
+              {:else}
+                <Button
+                  style="btn_submit"
+                  type="submit"
+                  disabled={btnDisabled}
+                  on:handle-click={depositInternshipOffer}
+                >
+                  Confirmer
+                </Button>
+              {/if}
             </div>
           </form>
         </fieldset>
