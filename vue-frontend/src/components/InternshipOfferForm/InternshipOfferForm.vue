@@ -17,6 +17,7 @@
                     class="form-control input_form"
                     id="jobName"
                     placeholder="Entrer le nom du poste de travail"
+                    v-model="internshipOffer.jobName"
                     required
                   />
                 </div>
@@ -26,6 +27,7 @@
                     class="form-control input_form"
                     id="description"
                     placeholder="Entrer une description du poste"
+                    v-model="internshipOffer.description"
                     required
                   />
                 </div>
@@ -38,6 +40,7 @@
                     class="form-control input_form"
                     id="startDate"
                     placeholder="Entrer la date de début du stage"
+                    v-model="internshipOffer.startDate"
                     required
                   />
                 </div>
@@ -50,6 +53,7 @@
                     class="form-control input_form"
                     id="endDate"
                     placeholder="Entrer la date de fin du stage"
+                    v-model="internshipOffer.endDate"
                     required
                   />
                 </div>
@@ -62,6 +66,7 @@
                     class="form-control input_form"
                     id="weeklyWorkTime"
                     placeholder="Entrer la quantité d'heures par semaine"
+                    v-model="internshipOffer.weeklyWorkTime"
                     required
                   />
                 </div>
@@ -74,6 +79,7 @@
                     class="form-control input_form"
                     id="hourlySalary"
                     placeholder="Entrer le salaire en dollars($) par heure"
+                    v-model="internshipOffer.hourlySalary"
                     required
                   />
                 </div>
@@ -89,7 +95,7 @@
                             <input
                               type="checkbox"
                               class="checkboxes_input"
-                              :checked="workday.value"
+                              v-model="workday.value"
                             />
                           </div>
                           <div class="col">
@@ -108,6 +114,7 @@
                     class="form-control input_form"
                     id="address"
                     placeholder="Entrer l'adresse de l'entreprise"
+                    v-model="internshipOffer.address"
                     required
                   />
                 </div>
@@ -117,6 +124,7 @@
                     class="form-control input_form"
                     id="city"
                     placeholder="Entrer la ville de l'entreprise"
+                    v-model="internshipOffer.city"
                     required
                   />
                 </div>
@@ -126,6 +134,7 @@
                     class="form-control input_form"
                     id="postalCode"
                     placeholder="Entrer le code postal de l'entreprise"
+                    v-model="internshipOffer.postalCode"
                     required
                     minLength="6"
                     maxLength="6"
@@ -139,6 +148,7 @@
                     name="workShift"
                     id="workShift"
                     class="input_form select_form"
+                    v-model="internshipOffer.workShift"
                     required
                   >
                     <option :key="workshift.key" v-for="workshift in WORKSHIFT" :value="workshift.key">{{ workshift.name }}</option>
@@ -152,6 +162,7 @@
                     name="workField"
                     id="workField"
                     class="input_form select_form"
+                    v-model="internshipOffer.workField"
                     required
                   >
                     <option :key="department.key" v-for="department in DEPARTMENT" :value="department.key">
@@ -174,6 +185,7 @@
                   :style="'btn_submit'"
                   type="submit"
                   :disabled="btnDisabled"
+                  @btn-click="depositInternshipOffer"
                 >
                   Confirmer
                 </Button>
@@ -193,7 +205,7 @@ import axios from "axios";
 import auth from "../../services/Auth";
 import { TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT } from "../../utils/TITLE";
 // eslint-disable-next-line no-unused-vars
-import { URL_DEPOSIT_INTERNSHIP_OFFER, URL_VALIDATE_INTERNSHIP_OFFER,} from "../../utils/API";
+import { URL_DEPOSIT_INTERNSHIP_OFFER } from "../../utils/API";
 import DEPARTMENT from "../../utils/DEPARTMENT";
 import WORKSHIFT from "../../utils/WORKSHIFT";
 // eslint-disable-next-line no-unused-vars
@@ -227,6 +239,7 @@ export default {
       DEPARTMENT: DEPARTMENT,
       WORKSHIFT: WORKSHIFT,
       WORKDAYS: WORKDAYS,
+      currentUser: auth.getUser()
     };
   },
   methods: {
@@ -300,8 +313,8 @@ export default {
       }
     },
     depositInternshipOffer() {
-    this.internshipOffer.monitor = this.currentUser; //non
-    let internshipWorkdays = this.workdays.filter((workday) => workday.value);
+    this.internshipOffer.monitor = this.currentUser; 
+    let internshipWorkdays = this.WORKDAYS.filter((workday) => workday.value);
     internshipWorkdays.forEach((workday) =>
       this.internshipOffer.workDays.push(workday.key)
     );
@@ -327,13 +340,16 @@ export default {
   },
   },
   watch: {
-    loginFields: {
-      handler(loginFields) {
-        this.handleValidations(loginFields);
+    internshipOffer: {
+      handler(internshipOffer) {
+        this.handleValidations(internshipOffer);
       },
       deep: true,
     },
   },
+  mounted() {
+    this.WORKDAYS.forEach((workday) => workday.value = false)
+  }
 };
 </script>
 
