@@ -111,6 +111,8 @@ export default {
 /* Override default value of 'none' */
 .modal {
   display: block;
+  color: black;
+  background-color: rgba(0, 0, 0, 0.55);
 }
 
 .cont_file_form {

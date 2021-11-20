@@ -24,12 +24,23 @@ const INTERNSHIP_MANAGER_URL = HOME_URL.concat([
     key: "VALID_CV",
     link: "/studentList/validation/cv",
     name: "Validation CV étudiant",
+  },
+  {
+    key: "VALID_INTERNSHIP_OFFER",
+    link: "/internshipOfferList/validation",
+    name: "Validation d'offre de stage",
   }
 ]);
 
 const STUDENT_URL = HOME_URL.concat([  ]);
 
-const MONITOR_URL = HOME_URL.concat([  ]);
+const MONITOR_URL = HOME_URL.concat([ 
+  {
+    key: "DEPOSIT_INTERNSHIP_OFFER",
+    link: "/internshipOffer/form/deposit",
+    name: "Dépôt d'offre de stage",
+  }
+ ]);
 
 const SUPERVISOR_URL = HOME_URL.concat([  ]);
 
