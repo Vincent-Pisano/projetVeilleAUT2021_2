@@ -29,7 +29,13 @@ const INTERNSHIP_MANAGER_URL = HOME_URL.concat([
 
 const STUDENT_URL = HOME_URL.concat([  ]);
 
-const MONITOR_URL = HOME_URL.concat([  ]);
+const MONITOR_URL = HOME_URL.concat([ 
+  {
+    key: "DEPOSIT_INTERNSHIP_OFFER",
+    link: "/internshipOffer/form/deposit",
+    name: "Dépôt d'offre de stage",
+  }
+ ]);
 
 const SUPERVISOR_URL = HOME_URL.concat([  ]);
 

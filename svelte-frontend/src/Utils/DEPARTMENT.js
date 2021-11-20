@@ -1,7 +1,7 @@
 export default [
     {
         key: "COMPUTER_SCIENCE",
-        name: "informatique"
+        name: "Informatique"
     },
     {
         key: "ARCHITECTURE",
