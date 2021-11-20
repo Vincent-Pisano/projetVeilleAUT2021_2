@@ -1,9 +1,13 @@
 <script>
   import { TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT } from "../../Utils/TITLE";
+  import axios from "axios";
+  import { navigate } from "svelte-routing";
+  import { URL_DEPOSIT_INTERNSHIP_OFFER } from "../../Utils/API";
   import DEPARTMENT from "../../Utils/DEPARTMENT";
   import WORKSHIFT from "../../Utils/WORKSHIFT";
   import WORKDAYS from "../../Utils/WORKDAYS";
   import Button from "../Button.svelte";
+  import { currentUser } from "../../services/Store";
 
   export let location;
   if (location == null) {
@@ -29,17 +33,105 @@
   };
   let workdays = WORKDAYS;
 
-  const handleWorkdays = () => {
-    
-};
+  function formatDates() {
+    if (internshipOffer) {
+      internshipOffer.startDate = formatDate(internshipOffer.startDate);
+      internshipOffer.endDate = formatDate(internshipOffer.endDate);
+    }
+  }
+
+  function formatDate(dateString) {
+    let date = new Date(dateString);
+    let dateFormatted = date.toISOString().split("T")[0];
+    return dateFormatted;
+  }
 
   const handleValidations = () => {
-    
+    if (
+      internshipOffer.startDate != "" &&
+      internshipOffer.endDate != "" &&
+      formatDate(internshipOffer.startDate) >
+        formatDate(internshipOffer.endDate)
+    ) {
+      btnDisabled = true;
+      errorMessage =
+        "Erreur, La date de début de stage doit être avant celle de fin de stage !";
+    } else if (
+      internshipOffer.weeklyWorkTime != "" &&
+      internshipOffer.weeklyWorkTime > 40
+    ) {
+      btnDisabled = true;
+      errorMessage =
+        "Erreur, La limite légale de travail d'un stagiaire est de 40H";
+    } else if (
+      internshipOffer.weeklyWorkTime != "" &&
+      internshipOffer.weeklyWorkTime < 0
+    ) {
+      btnDisabled = true;
+      errorMessage = "Erreur, veuillez rentrer un horaire valide";
+    } else if (
+      internshipOffer.hourlySalary != "" &&
+      internshipOffer.hourlySalary < 13.5
+    ) {
+      btnDisabled = true;
+      errorMessage =
+        "Erreur, veuillez ne pas être un radin, salaire insuffisant";
+    } else if (
+      internshipOffer.postalCode != "" &&
+      internshipOffer.postalCode.length < 6
+    ) {
+      btnDisabled = true;
+      errorMessage =
+        "Erreur, Veuillez rentrer un code postal Valide ! (ex. EX3M5l)";
+    } else if (
+      internshipOffer.jobName != "" &&
+      internshipOffer.description != "" &&
+      internshipOffer.startDate != "" &&
+      internshipOffer.endDate != "" &&
+      internshipOffer.weeklyWorkTime != "" &&
+      internshipOffer.hourlySalary != "" &&
+      internshipOffer.address != "" &&
+      internshipOffer.city != "" &&
+      internshipOffer.postalCode != "" &&
+      internshipOffer.workShift != "" &&
+      internshipOffer.workField != ""
+    ) {
+      btnDisabled = false;
+      errorMessage = "";
+    } else {
+      errorMessage = "";
+    }
   };
 
+  const setData = () => {};
+
   const depositInternshipOffer = () => {
-    
-};
+    formatDates();
+    internshipOffer.monitor = $currentUser;
+    let internshipWorkdays = workdays.filter((workday) => workday.value);
+    internshipWorkdays.forEach((workday) =>
+      internshipOffer.workDays.push(workday.key)
+    );
+    if (internshipOffer.workDays.length == 0) {
+      errorMessage = "Erreur, Veuillez choisir au moins un jour de travail !";
+    } else if (!btnDisabled) {
+      let formData = new FormData();
+      internshipOffer.monitor.signature = undefined;
+      formData.append("internshipOffer", JSON.stringify(internshipOffer));
+      axios
+        .post(URL_DEPOSIT_INTERNSHIP_OFFER, formData)
+        .then((response) => {
+          setTimeout(() => {
+            navigate("/home");
+          }, 3000);
+          errorMessage = "Confirmation du dépôt, vous allez être redirigé";
+        })
+        .catch((error) => {
+          isLoading = false;
+          errorMessage = "Erreur durant le dépot de l'offre de stage...";
+        });
+    }
+  };
 </script>
 
 <div class="container cont_principal">
@@ -145,8 +237,7 @@
                             <input
                               type="checkbox"
                               class="checkboxes_input"
-                              bind:value={workday.key}
-                              on:input={handleWorkdays}
+                              bind:checked={workday.value}
                             />
                           </div>
                           <div class="col">
@@ -231,16 +322,22 @@
               </div>
             </div>
             <div class="container cont_btn">
-                <p>{errorMessage}</p>
-                <Button
-                  style="btn_submit"
-                  type="submit"
-                  disabled={btnDisabled}
-                  on:handle-click={depositInternshipOffer}
-                >
-                  Connexion
-                </Button>
-              </div>
+              <p
+                style={errorMessage.startsWith("Erreur")
+                  ? "color:red;"
+                  : "color:green;"}
+              >
+                {errorMessage}
+              </p>
+              <Button
+                style="btn_submit"
+                type="submit"
+                disabled={btnDisabled}
+                on:handle-click={depositInternshipOffer}
+              >
+                Confirmer
+              </Button>
+            </div>
           </form>
         </fieldset>
       </div>
