@@ -6,7 +6,8 @@ const store = createStore({
   state() {
     return {
       isAuthenticated: false,
-      user: undefined
+      user: undefined,
+      currentInternshipOffer: undefined
     };
   },
   getters: {
@@ -16,6 +17,9 @@ const store = createStore({
     user(state) {
       return state.user;
     },
+    currentInternshipOffer(state) {
+      return state.currentInternshipOffer;
+    },
   },
   mutations: {
     setIsAuthenticated(state, value) {
@@ -23,6 +27,9 @@ const store = createStore({
     },
     setUser(state, value) {
       state.user = value;
+    },
+    setCurrentInternshipOffer(state, value) {
+      state.currentInternshipOffer = value;
     },
   },
 });

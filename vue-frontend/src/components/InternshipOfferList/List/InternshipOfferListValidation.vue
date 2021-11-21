@@ -12,6 +12,7 @@ import InternshipOfferList from "../InternshipOfferList.vue";
 import { TITLE_INTERNSHIP_OFFER_LIST_VALIDATION } from "../../../utils/TITLE";
 import { URL_GET_ALL_INTERNSHIP_OFFERS_TO_VALIDATE } from "../../../utils/API";
 import axios from "axios";
+import store from "../../../services/Store";
 
 export default {
   name: "StudentListValidCV",
@@ -38,9 +39,10 @@ export default {
       });
   },
   methods: {
-    changeCurrentInternshipOffer(student) {
-      this.currentStudent = student;
-      console.log("redirection")
+    changeCurrentInternshipOffer(internshipOffer) {
+      this.currentInternshipOffer = internshipOffer;
+      store.commit('setCurrentInternshipOffer', this.currentInternshipOffer)
+      this.$router.push({ name: 'InternshipOfferFormValidation'})
     }
   },
 };

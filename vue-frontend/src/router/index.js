@@ -39,6 +39,11 @@ const routes = [
     component: InternshipOfferListValidation,
   },
   {
+    path: "/internshipOffer/form/validation",
+    name: "InternshipOfferFormValidation",
+    component: InternshipOfferForm
+  },
+  {
     path: "/:pathMatch(.*)",
     redirect: "/",
   },

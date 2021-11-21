@@ -1,4 +1,5 @@
 <template>
+  {{ currentInternshipOffer }}
   <div class="container cont_principal">
     <div class="row cont_central">
       <div class="col cont_form">
@@ -8,7 +9,7 @@
           </div>
         </div>
         <div class="row">
-          <fieldset >
+          <fieldset>
             <form>
               <div class="cont_inputs">
                 <div class="form-group">
@@ -88,7 +89,11 @@
                     Jours de travail
                   </label>
                   <div class="container workDays checkboxes">
-                    <div class="form-group" :key="workday.key" v-for="workday in WORKDAYS">
+                    <div
+                      class="form-group"
+                      :key="workday.key"
+                      v-for="workday in WORKDAYS"
+                    >
                       <div class="container">
                         <div class="row">
                           <div class="col">
@@ -151,7 +156,13 @@
                     v-model="internshipOffer.workShift"
                     required
                   >
-                    <option :key="workshift.key" v-for="workshift in WORKSHIFT" :value="workshift.key">{{ workshift.name }}</option>
+                    <option
+                      :key="workshift.key"
+                      v-for="workshift in WORKSHIFT"
+                      :value="workshift.key"
+                    >
+                      {{ workshift.name }}
+                    </option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -165,7 +176,11 @@
                     v-model="internshipOffer.workField"
                     required
                   >
-                    <option :key="department.key" v-for="department in DEPARTMENT" :value="department.key">
+                    <option
+                      :key="department.key"
+                      v-for="department in DEPARTMENT"
+                      :value="department.key"
+                    >
                       {{ department.name }}
                     </option>
                   </select>
@@ -181,14 +196,29 @@
                 >
                   {{ errorMessage }}
                 </p>
-                <Button
-                  :style="'btn_submit'"
-                  type="submit"
-                  :disabled="btnDisabled"
-                  @btn-click="depositInternshipOffer"
-                >
-                  Confirmer
-                </Button>
+                <legend>
+                  <Button
+                    v-if="
+                      this.$store.getters.currentInternshipOffer !== undefined
+                    "
+                    id="validationButton"
+                    :style="'btn_submit'"
+                    type="submit"
+                    :disabled="btnDisabled"
+                    @btn-click="validateInternshipOffer"
+                  >
+                    Valider
+                  </Button>
+                  <Button
+                    v-else
+                    :style="'btn_submit'"
+                    type="submit"
+                    :disabled="btnDisabled"
+                    @btn-click="depositInternshipOffer"
+                  >
+                    Confirmer
+                  </Button>
+                </legend>
               </div>
             </form>
           </fieldset>
@@ -201,15 +231,13 @@
 <script>
 import Button from "../Button.vue";
 import axios from "axios";
-// eslint-disable-next-line no-unused-vars
 import auth from "../../services/Auth";
 import { TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT } from "../../utils/TITLE";
-// eslint-disable-next-line no-unused-vars
-import { URL_DEPOSIT_INTERNSHIP_OFFER } from "../../utils/API";
+import { URL_DEPOSIT_INTERNSHIP_OFFER, URL_VALIDATE_INTERNSHIP_OFFER } from "../../utils/API";
 import DEPARTMENT from "../../utils/DEPARTMENT";
 import WORKSHIFT from "../../utils/WORKSHIFT";
-// eslint-disable-next-line no-unused-vars
 import WORKDAYS from "../../utils/WORKDAYS";
+import store from "../../services/Store";
 
 export default {
   name: "InternshipOfferForm",
@@ -219,27 +247,31 @@ export default {
   data() {
     return {
       errorMessage: "",
-      btnDisabled: true,
-      internshipOffer: {
-        jobName: "TEST",
-        description: "",
-        startDate: "",
-        endDate: "",
-        weeklyWorkTime: "",
-        hourlySalary: "",
-        workDays: [],
-        address: "",
-        city: "",
-        postalCode: "",
-        workShift: WORKSHIFT[0].key,
-        workField: DEPARTMENT[0].key,
-        monitor: {},
-      },
+      btnDisabled:
+        store.getters.currentInternshipOffer !== undefined ? false : true,
+      internshipOffer:
+        store.getters.currentInternshipOffer !== undefined
+          ? store.getters.currentInternshipOffer
+          : {
+              jobName: "TEST",
+              description: "",
+              startDate: "",
+              endDate: "",
+              weeklyWorkTime: "",
+              hourlySalary: "",
+              workDays: [],
+              address: "",
+              city: "",
+              postalCode: "",
+              workShift: WORKSHIFT[0].key,
+              workField: DEPARTMENT[0].key,
+              monitor: {},
+            },
       TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT: TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT,
       DEPARTMENT: DEPARTMENT,
       WORKSHIFT: WORKSHIFT,
       WORKDAYS: WORKDAYS,
-      currentUser: auth.getUser()
+      currentUser: auth.getUser(),
     };
   },
   methods: {
@@ -313,30 +345,49 @@ export default {
       }
     },
     depositInternshipOffer() {
-    this.internshipOffer.monitor = this.currentUser; 
-    let internshipWorkdays = this.WORKDAYS.filter((workday) => workday.value);
-    internshipWorkdays.forEach((workday) =>
-      this.internshipOffer.workDays.push(workday.key)
-    );
-    if (this.internshipOffer.workDays.length == 0) {
-      this.errorMessage = "Erreur, Veuillez choisir au moins un jour de travail !";
-    } else if (!this.btnDisabled) {
-      let formData = new FormData();
-      this.internshipOffer.monitor.signature = undefined;
-      formData.append("internshipOffer", JSON.stringify(this.internshipOffer));
-      axios
-        .post(URL_DEPOSIT_INTERNSHIP_OFFER, formData)
-        .then(() => {
-          setTimeout(() => {
-            this.$router.push("/home")
-          }, 3000);
-          this.errorMessage = "Confirmation du dépôt, vous allez être redirigé";
-        })
-        .catch(() => {
-          this.isLoading = false;
-          this.errorMessage = "Erreur durant le dépot de l'offre de stage...";
-        });
-    }
+      this.internshipOffer.monitor = this.currentUser;
+      let internshipWorkdays = this.WORKDAYS.filter((workday) => workday.value);
+      internshipWorkdays.forEach((workday) =>
+        this.internshipOffer.workDays.push(workday.key)
+      );
+      if (this.internshipOffer.workDays.length == 0) {
+        this.errorMessage =
+          "Erreur, Veuillez choisir au moins un jour de travail !";
+      } else if (!this.btnDisabled) {
+        let formData = new FormData();
+        this.internshipOffer.monitor.signature = undefined;
+        formData.append(
+          "internshipOffer",
+          JSON.stringify(this.internshipOffer)
+        );
+        axios
+          .post(URL_DEPOSIT_INTERNSHIP_OFFER, formData)
+          .then(() => {
+            setTimeout(() => {
+              this.$router.push("/home");
+            }, 3000);
+            this.errorMessage =
+              "Confirmation du dépôt, vous allez être redirigé";
+          })
+          .catch(() => {
+            this.isLoading = false;
+            this.errorMessage = "Erreur durant le dépot de l'offre de stage...";
+          });
+      }
+    },
+    validateInternshipOffer() {
+    axios
+      .post(URL_VALIDATE_INTERNSHIP_OFFER + this.internshipOffer.id)
+      .then(() => {
+        this.errorMessage =
+          "L'offre de stage a été validée, vous allez être redirigé";
+        setTimeout(() => {
+          this.$router.push("/internshipOfferList/validation");
+        }, 2000);
+      })
+      .catch(() => {
+        this.errorMessage = "Erreur lors de la validation";
+      });
   },
   },
   watch: {
@@ -348,134 +399,151 @@ export default {
     },
   },
   mounted() {
-    this.WORKDAYS.forEach((workday) => workday.value = false)
-  }
+    this.WORKDAYS.forEach((workday) => (workday.value = false));
+    if (store.getters.currentInternshipOffer !== undefined) {
+      var inputs = document.getElementsByClassName("input_form");
+      Array.prototype.forEach.call(inputs, function (input) {
+        input.disabled = true;
+      });
+      var checkboxes = document.getElementsByClassName("checkboxes_input");
+      Array.prototype.forEach.call(checkboxes, function (checkboxe) {
+        checkboxe.disabled = true;
+      });
+      this.formatDates();
+      this.WORKDAYS.forEach(
+        (workday) =>
+          (workday.value =
+            store.getters.currentInternshipOffer.workDays.includes(workday.key))
+      );
+    }
+    console.log(this.btnDisabled);
+  },
 };
 </script>
 
 <style scoped>
 .cont_principal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 100vh;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
 
-  .cont_central {
-    padding: 2%;
-    background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
-    border-radius: 8px;
-    transition: all 0.5s;
-    width: 75%;
-    margin: 5% auto;
-  }
+.cont_central {
+  padding: 2%;
+  background-image: linear-gradient(-226deg, #ffffff 8%, #eef3f5 100%);
+  border-radius: 8px;
+  transition: all 0.5s;
+  width: 75%;
+  margin: 5% auto;
+}
 
-  .cont_form {
-    min-width: 100%;
-  }
+.cont_form {
+  min-width: 100%;
+}
 
-  .cont_title_form {
-    width: 100%;
-    box-shadow: none !important;
-    color: rgba(255, 64, 88, 0.74);
-  }
+.cont_title_form {
+  width: 100%;
+  box-shadow: none !important;
+  color: rgba(255, 64, 88, 0.74);
+}
 
-  .cont_title_form h2 {
-    font-weight: bold;
-    font-size: 2.5rem;
-  }
+.cont_title_form h2 {
+  font-weight: bold;
+  font-size: 2.5rem;
+}
 
-  .discret {
-    color: #9bacb3;
-  }
+.discret {
+  color: #9bacb3;
+}
 
-  .cont_inputs {
-    width: 100%;
-    margin-top: 2%;
-  }
+.cont_inputs {
+  width: 100%;
+  margin-top: 2%;
+}
 
+.input_form {
+  width: 90%;
+  border: none;
+  border-bottom: 1px solid #b0bec5;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+  border-radius: 0%;
+
+  margin: 3% 5%;
+  padding: 3% 2%;
+  opacity: 1;
+  height: 5px;
+  display: block;
+}
+
+.input_form:focus {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.select_form {
+  width: 90%;
+  border: none;
+  border: 1px solid #b0bec5;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+  transition: all 0.5s;
+
+  margin: 5% 5%;
+  padding: 0% 2%;
+  opacity: 1;
+  height: 50px;
+  font-size: 20px;
+  display: block;
+}
+
+.checkboxes {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.checkboxes .row {
+  justify-content: center;
+  margin-top: 2%;
+}
+
+.checkboxes .row > * {
+  margin: 0px 0px;
+}
+
+.checkboxes label {
+  display: block;
+  padding-right: 10px;
+  padding-left: 22px;
+  text-indent: -22px;
+  margin-bottom: 5px;
+  color: #999;
+}
+.checkboxes input {
+  vertical-align: middle;
+  width: 25px;
+  height: 25px;
+}
+.checkboxes label span {
+  vertical-align: middle;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+@media only screen and (max-width: 768px) {
   .input_form {
-    width: 90%;
-    border: none;
-    border-bottom: 1px solid #b0bec5;
-    background-color: transparent;
-    font-size: 20px;
-    outline: none;
-    transition: all 0.5s;
-    border-radius: 0%;
-
-    margin: 3% 5%;
-    padding: 3% 2%;
-    opacity: 1;
-    height: 5px;
-    display: block;
+    padding: 15px;
   }
-
-  .input_form:focus {
-    box-shadow: none;
-    background-color: transparent;
+  .cont_central {
+    width: 98%;
   }
-
-  .select_form {
-    width: 90%;
-    border: none;
-    border: 1px solid #b0bec5;
-    background-color: transparent;
-    font-size: 20px;
-    outline: none;
-    transition: all 0.5s;
-
-    margin: 5% 5%;
-    padding: 0% 2%;
-    opacity: 1;
-    height: 50px;
-    font-size: 20px;
-    display: block;
+  .input_form {
+    padding: 5% 2%;
   }
-
-  .checkboxes {
-    display: inline-block;
-    margin-top: 20px;
-  }
-
-  .checkboxes .row {
-    justify-content: center;
-    margin-top: 2%;
-  }
-
-  .checkboxes .row > * {
-    margin: 0px 0px;
-  }
-
-  .checkboxes label {
-    display: block;
-    padding-right: 10px;
-    padding-left: 22px;
-    text-indent: -22px;
-    margin-bottom: 5px;
-    color: #999;
-  }
-  .checkboxes input {
-    vertical-align: middle;
-    width: 25px;
-    height: 25px;
-  }
-  .checkboxes label span {
-    vertical-align: middle;
-    margin-left: 20px;
-    font-size: 20px;
-  }
-
-  @media only screen and (max-width: 768px) {
-    .input_form {
-      padding: 15px;
-    }
-    .cont_central {
-      width: 98%;
-    }
-    .input_form {
-      padding: 5% 2%;
-    }
-  }
+}
 </style>
