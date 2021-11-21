@@ -5,6 +5,7 @@ import Login from "../views/Auth/Login";
 import Subscribe from "../views/Auth/Subscribe";
 import StudentListValidCV from "../views/StudentList/StudentListValidCV";
 import InternshipOfferForm from "../views/InternshipOfferForm/InternshipOfferForm";
+import InternshipOfferListValidation from "../views/InternshipOfferList/InternshipOfferListValidation";
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: "/internshipOffer/form/deposit",
     name: "InternshipOfferFormDeposit",
     component: InternshipOfferForm,
+  },
+  {
+    path: "/internshipOfferList/validation",
+    name: "InternshipOfferListValidation",
+    component: InternshipOfferListValidation,
   },
   {
     path: "/:pathMatch(.*)",
