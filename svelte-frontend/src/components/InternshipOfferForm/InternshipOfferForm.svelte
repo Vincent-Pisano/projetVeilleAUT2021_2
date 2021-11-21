@@ -145,7 +145,6 @@
   };
 
   const validateInternshipOffer = () => {
-    console.log("test");
     axios
       .post(URL_VALIDATE_INTERNSHIP_OFFER + internshipOffer.id)
       .then((response) => {
@@ -170,7 +169,7 @@
         </div>
       </div>
       <div class="row">
-        <fieldset disabled={isInternshipOfferPassed}>
+        <fieldset>
           <form>
             <div class="cont_inputs">
               <div class="form-group">
