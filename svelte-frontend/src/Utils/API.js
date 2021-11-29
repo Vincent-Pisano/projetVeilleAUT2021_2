@@ -19,6 +19,7 @@ export let URL_VALID_CV_ACTIVE = url + "/validate/CV";
 //InternshipOffer Form
 export let URL_DEPOSIT_INTERNSHIP_OFFER = url + "/save/internshipOffer"
 export let URL_VALIDATE_INTERNSHIP_OFFER = url + "/validate/internshipOffer/"
+export let URL_REFUSE_INTERNSHIP_OFFER = url + "/refuse/internshipOffer/"
 
 //InternshipOffer List
 export let URL_GET_ALL_INTERNSHIP_OFFERS_TO_VALIDATE = url + "/getAll/internshipOffer/unvalidated/"

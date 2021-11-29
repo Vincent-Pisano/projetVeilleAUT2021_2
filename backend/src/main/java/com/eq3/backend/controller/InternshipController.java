@@ -120,6 +120,13 @@ public class InternshipController {
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
+    @PostMapping(value = "/refuse/internshipOffer/{idOffer}")
+    public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String idOffer) {
+        return service.refuseInternshipOffer(idOffer)
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
     @PostMapping("/update/internshipApplication")
     public ResponseEntity<InternshipApplication> updateInternshipApplication(@RequestBody InternshipApplication internshipApplication) {
         return service.updateInternshipApplication(internshipApplication)

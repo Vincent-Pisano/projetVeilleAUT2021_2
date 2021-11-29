@@ -11,6 +11,7 @@
   import WORKDAYS from "../../Utils/WORKDAYS";
   import Button from "../Button.svelte";
   import { currentUser } from "../../services/Store";
+  import InternshipOfferModalConfirmRefusal from "./Modal/InternshipOfferModalConfirmRefusal.svelte";
 
   export let location;
   if (location == null) {
@@ -18,6 +19,7 @@
   }
 
   $: errorMessage = "";
+  let isOpen = false;
   let isInternshipOfferPassed = location.state.id !== undefined;
   let btnDisabled = isInternshipOfferPassed ? false : true;
   let internshipOffer = isInternshipOfferPassed
@@ -179,6 +181,7 @@
                   id="jobName"
                   placeholder="Entrer le nom du poste de travail"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.jobName}
                   on:input={handleValidations}
                 />
@@ -190,6 +193,7 @@
                   id="description"
                   placeholder="Entrer une description du poste"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.description}
                   on:input={handleValidations}
                 />
@@ -204,6 +208,7 @@
                   id="startDate"
                   placeholder="Entrer la date de début du stage"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.startDate}
                   on:input={handleValidations}
                 />
@@ -218,6 +223,7 @@
                   id="endDate"
                   placeholder="Entrer la date de fin du stage"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.endDate}
                   on:input={handleValidations}
                 />
@@ -232,6 +238,7 @@
                   id="weeklyWorkTime"
                   placeholder="Entrer la quantité d'heures par semaine"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.weeklyWorkTime}
                   on:input={handleValidations}
                 />
@@ -246,6 +253,7 @@
                   id="hourlySalary"
                   placeholder="Entrer le salaire en dollars($) par heure"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.hourlySalary}
                   on:input={handleValidations}
                 />
@@ -263,6 +271,7 @@
                             <input
                               type="checkbox"
                               class="checkboxes_input"
+                              disabled={isInternshipOfferPassed}
                               bind:checked={workday.value}
                             />
                           </div>
@@ -284,6 +293,7 @@
                   id="address"
                   placeholder="Entrer l'adresse de l'entreprise"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.address}
                   on:input={handleValidations}
                 />
@@ -295,6 +305,7 @@
                   id="city"
                   placeholder="Entrer la ville de l'entreprise"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.city}
                   on:input={handleValidations}
                 />
@@ -308,6 +319,7 @@
                   required
                   minLength="6"
                   maxLength="6"
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.postalCode}
                   on:input={handleValidations}
                 />
@@ -321,6 +333,7 @@
                   id="workShift"
                   class="input_form select_form"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.workShift}
                   on:input={handleValidations}
                 >
@@ -338,6 +351,7 @@
                   id="workField"
                   class="input_form select_form"
                   required
+                  disabled={isInternshipOfferPassed}
                   bind:value={internshipOffer.workField}
                   on:input={handleValidations}
                 >
@@ -357,12 +371,20 @@
               </p>
               {#if isInternshipOfferPassed}
                 <Button
-                  style="btn_submit"
+                  style="btn btn-lg btn-success mx-3"
                   type="submit"
                   on:handle-click={validateInternshipOffer}
                 >
                   Valider
                 </Button>
+                <Button
+                  style="btn btn-lg btn-danger mx-3"
+                  type="submit"
+                  on:handle-click={() => (isOpen = !isOpen)}
+                >
+                  Refuser
+                </Button>
+                <InternshipOfferModalConfirmRefusal {isOpen} {internshipOffer}/>
               {:else}
                 <Button
                   style="btn_submit"

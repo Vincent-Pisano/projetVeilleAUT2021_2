@@ -25,15 +25,13 @@ public class BackendService {
     private final InternshipManagerRepository internshipManagerRepository;
     private final InternshipOfferRepository internshipOfferRepository;
     private final InternshipRepository internshipRepository;
-    private final EvaluationRepository evaluationRepository;
 
     BackendService(StudentRepository studentRepository,
                    MonitorRepository monitorRepository,
                    SupervisorRepository supervisorRepository,
                    InternshipManagerRepository internshipManagerRepository,
                    InternshipOfferRepository internshipOfferRepository,
-                   InternshipRepository internshipRepository,
-                   EvaluationRepository evaluationRepository
+                   InternshipRepository internshipRepository
     ) {
         this.studentRepository = studentRepository;
         this.monitorRepository = monitorRepository;
@@ -41,7 +39,6 @@ public class BackendService {
         this.internshipManagerRepository = internshipManagerRepository;
         this.internshipOfferRepository = internshipOfferRepository;
         this.internshipRepository = internshipRepository;
-        this.evaluationRepository = evaluationRepository;
     }
 
     public Optional<Binary> saveSignature(String username, MultipartFile signature) {
