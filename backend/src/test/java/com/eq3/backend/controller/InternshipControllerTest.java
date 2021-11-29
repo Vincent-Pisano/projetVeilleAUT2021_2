@@ -367,7 +367,7 @@ public class InternshipControllerTest {
     public void testValidateInternshipOffer() throws Exception {
         //Arrange
         expectedInternshipOffer = getInternshipOfferWithId();
-        expectedInternshipOffer.setIsValid(true);
+        expectedInternshipOffer.setStatus(InternshipOffer.OfferStatus.ACCEPTED);
 
         when(service.validateInternshipOffer(expectedInternshipOffer.getId()))
                 .thenReturn(Optional.of(expectedInternshipOffer));
@@ -384,7 +384,7 @@ public class InternshipControllerTest {
                 = new ObjectMapper().readValue(response.getContentAsString(), InternshipOffer.class);
         assertThat(response.getStatus()).isEqualTo(HttpStatus.ACCEPTED.value());
         assertThat(actualInternshipOffer).isNotNull();
-        assertThat(actualInternshipOffer.getIsValid()).isTrue();
+        assertThat(actualInternshipOffer.getStatus()).isEqualTo(InternshipOffer.OfferStatus.ACCEPTED);
     }
 
     @Test

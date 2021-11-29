@@ -197,18 +197,30 @@
                   {{ errorMessage }}
                 </p>
                 <legend>
-                  <Button
-                    v-if="
+                  <div v-if="
                       this.$store.getters.currentInternshipOffer !== undefined
-                    "
+                    ">
+                    <Button
                     id="validationButton"
-                    :style="'btn_submit'"
+                    :style="'btn btn-lg btn-success mx-3'"
                     type="submit"
                     :disabled="btnDisabled"
                     @btn-click="validateInternshipOffer"
                   >
                     Valider
                   </Button>
+                  <Button
+                    id="validationButton"
+                    :style="'btn btn-lg btn-danger mx-3'"
+                    type="submit"
+                    :disabled="btnDisabled"
+                    @btn-click="showModal"
+                  >
+                    Refuser
+                  </Button>
+                  <InternshipOfferModalConfirmRefusal v-if="displayModal" @close-modal-event="hideModal" :internshipOffer="this.internshipOffer" />
+                  </div>
+                  
                   <Button
                     v-else
                     :style="'btn_submit'"
@@ -233,20 +245,26 @@ import Button from "../Button.vue";
 import axios from "axios";
 import auth from "../../services/Auth";
 import { TITLE_INTERNSHIP_OFFER_FORM_DEPOSIT } from "../../utils/TITLE";
-import { URL_DEPOSIT_INTERNSHIP_OFFER, URL_VALIDATE_INTERNSHIP_OFFER } from "../../utils/API";
+import {
+  URL_DEPOSIT_INTERNSHIP_OFFER,
+  URL_VALIDATE_INTERNSHIP_OFFER,
+} from "../../utils/API";
 import DEPARTMENT from "../../utils/DEPARTMENT";
 import WORKSHIFT from "../../utils/WORKSHIFT";
 import WORKDAYS from "../../utils/WORKDAYS";
 import store from "../../services/Store";
+import InternshipOfferModalConfirmRefusal from "./Modal/InternshipOfferModalConfirmRefusal.vue"
 
 export default {
   name: "InternshipOfferForm",
   components: {
     Button,
+    InternshipOfferModalConfirmRefusal
   },
   data() {
     return {
       errorMessage: "",
+      displayModal:false,
       btnDisabled:
         store.getters.currentInternshipOffer !== undefined ? false : true,
       internshipOffer:
@@ -376,19 +394,25 @@ export default {
       }
     },
     validateInternshipOffer() {
-    axios
-      .post(URL_VALIDATE_INTERNSHIP_OFFER + this.internshipOffer.id)
-      .then(() => {
-        this.errorMessage =
-          "L'offre de stage a été validée, vous allez être redirigé";
-        setTimeout(() => {
-          this.$router.push("/internshipOfferList/validation");
-        }, 2000);
-      })
-      .catch(() => {
-        this.errorMessage = "Erreur lors de la validation";
-      });
-  },
+      axios
+        .post(URL_VALIDATE_INTERNSHIP_OFFER + this.internshipOffer.id)
+        .then(() => {
+          this.errorMessage =
+            "L'offre de stage a été validée, vous allez être redirigé";
+          setTimeout(() => {
+            this.$router.push("/internshipOfferList/validation");
+          }, 2000);
+        })
+        .catch(() => {
+          this.errorMessage = "Erreur lors de la validation";
+        });
+    },
+    showModal() {
+      this.displayModal = true;
+    },
+    hideModal() {
+      this.displayModal = false;
+    },
   },
   watch: {
     internshipOffer: {
@@ -416,7 +440,6 @@ export default {
             store.getters.currentInternshipOffer.workDays.includes(workday.key))
       );
     }
-    console.log(this.btnDisabled);
   },
 };
 </script>

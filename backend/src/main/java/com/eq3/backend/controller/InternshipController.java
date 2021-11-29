@@ -5,6 +5,7 @@ import com.eq3.backend.model.Internship;
 import com.eq3.backend.model.InternshipApplication;
 import com.eq3.backend.model.InternshipOffer;
 import com.eq3.backend.service.InternshipService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -116,6 +117,13 @@ public class InternshipController {
     @PostMapping("/validate/internshipOffer/{idOffer}")
     public ResponseEntity<InternshipOffer> validateInternshipOffer(@PathVariable String idOffer) {
         return service.validateInternshipOffer(idOffer)
+                .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping(value = "/refuse/internshipOffer/{idOffer}")
+    public ResponseEntity<InternshipOffer> refuseInternshipOffer(@PathVariable String idOffer) {
+        return service.refuseInternshipOffer(idOffer)
                 .map(_internshipOffer -> ResponseEntity.status(HttpStatus.ACCEPTED).body(_internshipOffer))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

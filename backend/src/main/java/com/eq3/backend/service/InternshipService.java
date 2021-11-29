@@ -102,7 +102,7 @@ public class InternshipService {
 
     public Optional<List<InternshipOffer>> getAllInternshipOfferByWorkField(Department workField) {
         List<InternshipOffer> internshipOffers =
-                internshipOfferRepository.findAllByWorkFieldAndIsValidTrueAndIsDisabledFalse(workField);
+                internshipOfferRepository.findAllByWorkFieldAndStatusAcceptedAndIsDisabledFalse(workField);
         internshipOffers.forEach(internshipOffer -> internshipOffer.setPDFDocument(
                 internshipOffer.getPDFDocument() != null ? new PDFDocument() : null)
         );
@@ -117,7 +117,7 @@ public class InternshipService {
     }
 
     public Optional<List<InternshipOffer>> getAllUnvalidatedInternshipOffer() {
-        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByIsValidFalseAndIsDisabledFalse();
+        List<InternshipOffer> internshipOffers = internshipOfferRepository.findAllByStatusWaitingAndIsDisabledFalse();
         return internshipOffers.isEmpty() ? Optional.empty() : Optional.of(internshipOffers);
     }
 
@@ -163,7 +163,15 @@ public class InternshipService {
 
     public Optional<InternshipOffer> validateInternshipOffer(String idOffer) {
         Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
-        optionalInternshipOffer.ifPresent(internshipOffer -> internshipOffer.setIsValid(true));
+        optionalInternshipOffer.ifPresent(internshipOffer -> internshipOffer.setStatus(InternshipOffer.OfferStatus.ACCEPTED));
+        return optionalInternshipOffer.map(internshipOfferRepository::save);
+    }
+
+    public Optional<InternshipOffer> refuseInternshipOffer(String idOffer) {
+        Optional<InternshipOffer> optionalInternshipOffer = internshipOfferRepository.findById(idOffer);
+        optionalInternshipOffer.ifPresent(internshipOffer -> {
+            internshipOffer.setStatus(InternshipOffer.OfferStatus.REFUSED);
+        });
         return optionalInternshipOffer.map(internshipOfferRepository::save);
     }
 
